@@ -1,4 +1,4 @@
-package src.banksys.forms;
+package banksys.forms;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -62,7 +62,7 @@ public class MainForm extends JFrame {
 		btnCadastrarConta.setBounds(10, 62, 161, 23);
 		panel.add(btnCadastrarConta);
 		
-		JButton btnFazerDeposito = new JButton("FAZER DEPÓSITO");
+		JButton btnFazerDeposito = new JButton("FAZER DEPï¿½SITO");
 		btnFazerDeposito.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FormDeposito deposito = new FormDeposito();
@@ -82,7 +82,7 @@ public class MainForm extends JFrame {
 		btnRealizarSaque.setBounds(10, 130, 161, 23);
 		panel.add(btnRealizarSaque);
 		
-		JButton btnTransferencia = new JButton("TRANSFERÊNCIA");
+		JButton btnTransferencia = new JButton("TRANSFERï¿½NCIA");
 		btnTransferencia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FormTransferencia transferencia = new FormTransferencia();
@@ -122,7 +122,7 @@ public class MainForm extends JFrame {
 		btnRenderJuros.setBounds(181, 130, 161, 23);
 		panel.add(btnRenderJuros);
 		
-		JButton btnRenderBonus = new JButton("RENDER BÔNUS");
+		JButton btnRenderBonus = new JButton("RENDER Bï¿½NUS");
 		btnRenderBonus.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FormRenderBonus renderBonus = new FormRenderBonus();

@@ -1,4 +1,4 @@
-package src.banksys.control.exception;
+package banksys.control.exception;
 
 public class BankTransactionException extends Exception {
 

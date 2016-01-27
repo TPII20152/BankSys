@@ -1,16 +1,16 @@
-package src.banksys.control;
+package banksys.control;
 
-import src.banksys.account.AbstractAccount;
-import src.banksys.account.SavingsAccount;
-import src.banksys.account.SpecialAccount;
-import src.banksys.account.exception.InsufficientFundsException;
-import src.banksys.account.exception.NegativeAmountException;
-import src.banksys.control.exception.BankTransactionException;
-import src.banksys.control.exception.IncompatibleAccountException;
-import src.banksys.persistence.IAccountRepository;
-import src.banksys.persistence.exception.AccountCreationException;
-import src.banksys.persistence.exception.AccountDeletionException;
-import src.banksys.persistence.exception.AccountNotFoundException;
+import banksys.account.AbstractAccount;
+import banksys.account.SavingsAccount;
+import banksys.account.SpecialAccount;
+import banksys.account.exception.InsufficientFundsException;
+import banksys.account.exception.NegativeAmountException;
+import banksys.control.exception.BankTransactionException;
+import banksys.control.exception.IncompatibleAccountException;
+import banksys.persistence.IAccountRepository;
+import banksys.persistence.exception.AccountCreationException;
+import banksys.persistence.exception.AccountDeletionException;
+import banksys.persistence.exception.AccountNotFoundException;
 
 public class BankController {
 

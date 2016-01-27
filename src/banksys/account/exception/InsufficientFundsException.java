@@ -1,4 +1,4 @@
-package src.banksys.account.exception;
+package banksys.account.exception;
 
 public class InsufficientFundsException extends Exception {
 

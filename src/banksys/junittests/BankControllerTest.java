@@ -1,4 +1,4 @@
-package src.banksys.junittests;
+package banksys.junittests;
 
 import static org.junit.Assert.*;
 
@@ -6,17 +6,17 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import junit.framework.AssertionFailedError;
-import src.banksys.account.AbstractAccount;
-import src.banksys.account.OrdinaryAccount;
-import src.banksys.account.SavingsAccount;
-import src.banksys.account.SpecialAccount;
-import src.banksys.control.BankController;
-import src.banksys.control.exception.BankTransactionException;
-import src.banksys.persistence.AccountVector;
-import src.banksys.persistence.IAccountRepository;
-import src.banksys.persistence.exception.AccountCreationException;
-import src.banksys.persistence.exception.AccountDeletionException;
-import src.banksys.persistence.exception.AccountNotFoundException;
+import banksys.account.AbstractAccount;
+import banksys.account.OrdinaryAccount;
+import banksys.account.SavingsAccount;
+import banksys.account.SpecialAccount;
+import banksys.control.BankController;
+import banksys.control.exception.BankTransactionException;
+import banksys.persistence.AccountVector;
+import banksys.persistence.IAccountRepository;
+import banksys.persistence.exception.AccountCreationException;
+import banksys.persistence.exception.AccountDeletionException;
+import banksys.persistence.exception.AccountNotFoundException;
 
 public class BankControllerTest {
 	

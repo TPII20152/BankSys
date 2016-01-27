@@ -1,4 +1,4 @@
-package src.banksys.junittests;
+package banksys.junittests;
 
 import static org.junit.Assert.*;
 

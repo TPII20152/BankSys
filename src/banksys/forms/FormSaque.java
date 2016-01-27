@@ -1,4 +1,4 @@
-package src.banksys.forms;
+package banksys.forms;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;

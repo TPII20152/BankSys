@@ -1,4 +1,4 @@
-package src.banksys.persistence.exception;
+package banksys.persistence.exception;
 
 public class AccountCreationException extends PersistenceException {
 

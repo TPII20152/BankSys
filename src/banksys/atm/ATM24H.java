@@ -1,15 +1,15 @@
-package src.banksys.atm;
+package banksys.atm;
 
 import java.util.Scanner;
 
-import src.banksys.account.AbstractAccount;
-import src.banksys.account.OrdinaryAccount;
-import src.banksys.account.SavingsAccount;
-import src.banksys.account.SpecialAccount;
-import src.banksys.account.TaxAccount;
-import src.banksys.control.BankController;
-import src.banksys.control.exception.BankTransactionException;
-import src.banksys.persistence.AccountVector;
+import banksys.account.AbstractAccount;
+import banksys.account.OrdinaryAccount;
+import banksys.account.SavingsAccount;
+import banksys.account.SpecialAccount;
+import banksys.account.TaxAccount;
+import banksys.control.BankController;
+import banksys.control.exception.BankTransactionException;
+import banksys.persistence.AccountVector;
 
 public class ATM24H {
 

@@ -1,9 +1,9 @@
-package src.banksys.persistence;
+package banksys.persistence;
 
-import src.banksys.account.AbstractAccount;
-import src.banksys.persistence.exception.AccountCreationException;
-import src.banksys.persistence.exception.AccountDeletionException;
-import src.banksys.persistence.exception.AccountNotFoundException;
+import banksys.account.AbstractAccount;
+import banksys.persistence.exception.AccountCreationException;
+import banksys.persistence.exception.AccountDeletionException;
+import banksys.persistence.exception.AccountNotFoundException;
 
 public interface IAccountRepository {
 

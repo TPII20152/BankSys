@@ -1,6 +1,6 @@
-package src.banksys.account;
+package banksys.account;
 
-import src.banksys.account.exception.NegativeAmountException;
+import banksys.account.exception.NegativeAmountException;
 
 public class SavingsAccount extends OrdinaryAccount {
 
