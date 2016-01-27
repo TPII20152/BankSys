@@ -1,4 +1,4 @@
-package banksys.persistence.exception;
+package src.banksys.persistence.exception;
 
 public class AccountNotFoundException extends PersistenceException {
 

@@ -1,7 +1,7 @@
-package banksys.account;
+package src.banksys.account;
 
-import banksys.account.exception.InsufficientFundsException;
-import banksys.account.exception.NegativeAmountException;
+import src.banksys.account.exception.InsufficientFundsException;
+import src.banksys.account.exception.NegativeAmountException;
 
 public class TaxAccount extends AbstractAccount {
 

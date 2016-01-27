@@ -1,4 +1,4 @@
-package banksys.account.exception;
+package src.banksys.account.exception;
 
 public class NegativeAmountException extends Exception {
 

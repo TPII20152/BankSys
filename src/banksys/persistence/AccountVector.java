@@ -1,11 +1,11 @@
-package banksys.persistence;
+package src.banksys.persistence;
 
 import java.util.Vector;
 
-import banksys.account.AbstractAccount;
-import banksys.persistence.exception.AccountCreationException;
-import banksys.persistence.exception.AccountDeletionException;
-import banksys.persistence.exception.AccountNotFoundException;
+import src.banksys.account.AbstractAccount;
+import src.banksys.persistence.exception.AccountCreationException;
+import src.banksys.persistence.exception.AccountDeletionException;
+import src.banksys.persistence.exception.AccountNotFoundException;
 
 public class AccountVector implements IAccountRepository {
 
