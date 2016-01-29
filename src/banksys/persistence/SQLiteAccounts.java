@@ -17,7 +17,7 @@ import banksys.persistence.exception.AccountDeletionException;
 
 public class SQLiteAccounts implements IAccountRepository{
 	private Connection connection;
-	public static final String TABLE_ACCOUNTS = "contas";
+	public static final String TABLE_ACCOUNTS = "accounts";
 	public static final String TABLE_BONUS = "bonus";
 	
 	public SQLiteAccounts() {
@@ -33,15 +33,15 @@ public class SQLiteAccounts implements IAccountRepository{
 				stmt = connection.createStatement();
 			
 	          String sqlTables = "CREATE TABLE IF NOT EXISTS " + TABLE_ACCOUNTS+
-	                       " (numero INTEGER PRIMARY KEY ," +
-	                       " saldo  REAL NOT NULL, " + 
-	                       " tipo   INTEGER     NOT NULL) ";
+	                       " (number INTEGER PRIMARY KEY ," +
+	                       " balance  REAL NOT NULL, " + 
+	                       " type   INTEGER     NOT NULL) ";
 	          stmt.executeUpdate(sqlTables);
 	          stmt.close();
 	          stmt = connection.createStatement();
 				
-	          String sqlBonus = "CREATE TABLE IF NOT EXISTS bonus " +
-	                       "(numero INTEGER PRIMARY KEY ," +
+	          String sqlBonus = "CREATE TABLE IF NOT EXISTS " + TABLE_BONUS+
+	                       " (number INTEGER PRIMARY KEY ," +
 	                       " bonus  REAL NOT NULL) "; 
 	          stmt.executeUpdate(sqlBonus);
 	          stmt.close();
@@ -55,12 +55,12 @@ public class SQLiteAccounts implements IAccountRepository{
 	  public void create(AbstractAccount conta) throws AccountCreationException {
 		  if(retrieve(conta.getNumber()) == null){
 			  connection = SQLiteConnector.getConnection();
-			    int tipo = getTipo(conta);
+			    int type = getTipo(conta);
 		        Statement stmt = null;
 		        try {
-		          String values = "VALUES ("+conta.getNumber() + ", "+ conta.getBalance()+", "+tipo+");";
+		          String values = "VALUES ("+conta.getNumber() + ", "+ conta.getBalance()+", "+type+");";
 		          stmt = connection.createStatement();
-		          String sql = "INSERT INTO "+  TABLE_ACCOUNTS + "(numero,saldo,tipo) " + values;
+		          String sql = "INSERT INTO "+  TABLE_ACCOUNTS + "(number,balance,type) " + values;
 		          if(getTipo(conta)==2){
 			    	  inserirBonus((SpecialAccount) conta);
 			      }             
@@ -77,7 +77,7 @@ public class SQLiteAccounts implements IAccountRepository{
 		  }
 	  }
 	   
-	  public AbstractAccount retrieve(String numero)
+	  public AbstractAccount retrieve(String number)
 	  {
 		  	connection = SQLiteConnector.getConnection();
 	        AbstractAccount conta = null;
@@ -85,28 +85,28 @@ public class SQLiteAccounts implements IAccountRepository{
 	        try {
 	          stmt = connection.createStatement();
 	          ResultSet rs = stmt.executeQuery( "SELECT * FROM "+TABLE_ACCOUNTS+
-	        		  							" WHERE numero = "+ numero+";");
+	        		  							" WHERE number = "+ number+";");
 	             
 	          if(rs.next()){
-	            	 String num = rs.getString("numero");
-		             double  saldo = rs.getDouble("saldo");
-		             int tipo = rs.getInt("tipo");
-		             if(tipo == 2){
+	            	 String num = rs.getString("number");
+		             double  balance = rs.getDouble("balance");
+		             int type = rs.getInt("type");
+		             if(type == 2){
 		            	 Statement stmtBonus = connection.createStatement();
 		            	 ResultSet rsBonus = stmt.executeQuery( "SELECT bonus FROM "+TABLE_BONUS+
-		  							" WHERE numero = "+ numero+";");
+		  							" WHERE number = "+ number+";");
 		            	 if(rsBonus.next()){
 		            		 double bonus = rs.getDouble("bonus");
 		            		 conta = createSpecialAccount(num, bonus);
-				             if(saldo >= 0) conta.credit(saldo); 
-				             	else conta.debit(saldo);
+				             if(balance >= 0) conta.credit(balance); 
+				             	else conta.debit(balance);
 				             }
 		            	 rsBonus.close();
 		            	 stmtBonus.close();	 
 		             } else{
-		            	 conta = createOrdinaryAccount(tipo, num);
-			             if(saldo >= 0) conta.credit(saldo); 
-			             	else conta.debit(saldo);
+		            	 conta = createOrdinaryAccount(type, num);
+			             if(balance >= 0) conta.credit(balance); 
+			             	else conta.debit(balance);
 			             }
 	             }
 	          rs.close();
@@ -127,7 +127,7 @@ public class SQLiteAccounts implements IAccountRepository{
 	      Statement stmt = connection.createStatement();
 	      String values = "VALUES ("+conta.getNumber() + ", "+ conta.getBonus()+");";
           stmt = connection.createStatement();
-          String sql = "INSERT INTO "+  TABLE_BONUS + " (numero,bonus) " + values;
+          String sql = "INSERT INTO "+  TABLE_BONUS + " (number,bonus) " + values;
 	      //connection.commit();
           stmt.executeUpdate(sql);
 	      stmt.close();
@@ -146,7 +146,7 @@ public class SQLiteAccounts implements IAccountRepository{
 	    try {
 	      stmt = connection.createStatement();
 	      //String values = "VALUES ("
-	      String sql = "UPDATE "+TABLE_ACCOUNTS+" set saldo="+conta.getBalance() + " WHERE numero="+conta.getNumber()+";";
+	      String sql = "UPDATE "+TABLE_ACCOUNTS+" set balance="+conta.getBalance() + " WHERE number="+conta.getNumber()+";";
 	      stmt.executeUpdate(sql);
 	      //connection.commit();
 	      if(getTipo(conta)==2){
@@ -168,7 +168,7 @@ public class SQLiteAccounts implements IAccountRepository{
 		  Statement stmt = null;  
 	      stmt = connection.createStatement();
 	      //String values = "VALUES ("
-	      String sql = "UPDATE "+TABLE_BONUS+" set bonus="+conta.getBonus() + " WHERE numero="+conta.getNumber()+";";
+	      String sql = "UPDATE "+TABLE_BONUS+" set bonus="+conta.getBonus() + " WHERE number="+conta.getNumber()+";";
 	      stmt.executeUpdate(sql);
 	      //connection.commit();
 	 
@@ -181,22 +181,22 @@ public class SQLiteAccounts implements IAccountRepository{
 	    System.out.println("Operation done successfully");
 	  }
 	  
-	  public void delete(String numero) throws AccountDeletionException
+	  public void delete(String number) throws AccountDeletionException
 	  {
-		  AbstractAccount conta = retrieve(numero);
+		  AbstractAccount conta = retrieve(number);
 		  if(conta != null){
 		    connection = SQLiteConnector.getConnection();
 	        Statement stmt = null;
 	        try {
 	          stmt = connection.createStatement();
-	          String sql = "DELETE from "+TABLE_ACCOUNTS+" where numero="+numero+";";
+	          String sql = "DELETE from "+TABLE_ACCOUNTS+" where number="+number+";";
 	          stmt.executeUpdate(sql);
 	          //connection.commit();
 	          stmt.close();
 	          
 	          if(getTipo(conta)==2){
 	        	  stmt = connection.createStatement();
-		          String sqlBonus = "DELETE from "+TABLE_BONUS+" where numero="+numero+";";
+		          String sqlBonus = "DELETE from "+TABLE_BONUS+" where number="+number+";";
 		          stmt.executeUpdate(sqlBonus);
 		          //connection.commit();
 		          stmt.close();
@@ -208,7 +208,7 @@ public class SQLiteAccounts implements IAccountRepository{
 	          System.exit(0);
 	        }
 	        System.out.println("Operation done successfully");
-		  } else throw new AccountDeletionException("",numero);
+		  } else throw new AccountDeletionException("",number);
 	  }
 	  public int getTipo(AbstractAccount conta){
 		  if(conta instanceof SpecialAccount){
@@ -221,9 +221,9 @@ public class SQLiteAccounts implements IAccountRepository{
 			  return 4;
 		  }
 	  }
-	  public AbstractAccount createOrdinaryAccount(int tipo, String num){
+	  public AbstractAccount createOrdinaryAccount(int type, String num){
 		  
-		  switch(tipo){
+		  switch(type){
 		  	case 1: return new OrdinaryAccount(num);
 		  	case 2: return new SpecialAccount(num);
 		  	case 3: return new SavingsAccount(num);
@@ -252,12 +252,12 @@ public SpecialAccount createSpecialAccount(String num,double bonus){
                 ResultSet rs = stmt.executeQuery( "SELECT * FROM "+TABLE_ACCOUNTS+";");
                 int i = 0;   
                 while(rs.next()){
-                  	 String num = rs.getString("numero");
-      	             double  saldo = rs.getDouble("saldo");
-      	             int tipo = rs.getInt("tipo");
-      	             conta = createOrdinaryAccount(tipo, num);
-      	             if(saldo >= 0) conta.credit(saldo); 
-      	             	else conta.debit(saldo);
+                  	 String num = rs.getString("number");
+      	             double  balance = rs.getDouble("balance");
+      	             int type = rs.getInt("type");
+      	             conta = createOrdinaryAccount(type, num);
+      	             if(balance >= 0) conta.credit(balance); 
+      	             	else conta.debit(balance);
       	             contas[i] = conta;
       	             i++;
                    }
@@ -290,7 +290,6 @@ public SpecialAccount createSpecialAccount(String num,double bonus){
         } catch ( Exception e ) {
           System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("Operation done successfully");
 		return quantidade;
 	}
 }

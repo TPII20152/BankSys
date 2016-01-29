@@ -20,4 +20,10 @@ public class OrdinaryAccount extends AbstractAccount {
 			throw new NegativeAmountException(amount);
 		}
 	}
+
+	@Override
+	public int getType() {
+		// TODO Auto-generated method stub
+		return 1;
+	}
 }
