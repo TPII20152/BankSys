@@ -4,7 +4,7 @@ import banksys.account.exception.InsufficientFundsException;
 import banksys.account.exception.NegativeAmountException;
 
 public class TaxAccount extends AbstractAccount {
-
+	
 	public TaxAccount(String number) {
 		super(number);
 	}
@@ -20,4 +20,11 @@ public class TaxAccount extends AbstractAccount {
 			throw new NegativeAmountException(amount);
 		}
 	}
+
+	@Override
+	public int getType() {
+		// TODO Auto-generated method stub
+		return 4;
+	}
+	
 }

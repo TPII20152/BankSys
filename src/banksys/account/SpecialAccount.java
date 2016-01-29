@@ -33,4 +33,8 @@ public class SpecialAccount extends OrdinaryAccount {
 		this.bonus = bonus;
 		
 	}
+	@Override
+	public int getType(){
+		return 2;
+	}
 }

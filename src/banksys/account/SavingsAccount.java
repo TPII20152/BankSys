@@ -14,4 +14,7 @@ public class SavingsAccount extends OrdinaryAccount {
 		} catch (NegativeAmountException e) {
 		}
 	}
+	public int getType(){
+		return 3;
+	}
 }
