@@ -9,7 +9,7 @@ public class PersistenceException extends Exception {
 	private String message;
 
 	public PersistenceException(String message, String number) {
-		super("Existing OrdinaryAccount!");
+		super("Existing Account!");
 		this.number = number;
 		this.message = message;
 	}
