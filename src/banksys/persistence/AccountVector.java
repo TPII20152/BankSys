@@ -43,7 +43,7 @@ public class AccountVector implements IAccountRepository {
 		return list;
 	}
 
-	public int mumberOfAccounts() {
+	public int numberOfAccounts() {
 		return this.accounts.size();
 	}
 

@@ -30,4 +30,6 @@ public abstract class AbstractAccount {
 	public double getBalance() {
 		return balance;
 	}
+	
+	public abstract int getType();
 }

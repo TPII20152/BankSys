@@ -28,4 +28,9 @@ public class SpecialAccount extends OrdinaryAccount {
 		super.credit(amount);
 		this.bonus += (amount * 0.01);
 	}
+
+	public void setBonus(double bonus) {
+		this.bonus = bonus;
+		
+	}
 }
