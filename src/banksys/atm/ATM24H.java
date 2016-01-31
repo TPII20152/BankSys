@@ -10,13 +10,14 @@ import banksys.account.TaxAccount;
 import banksys.control.BankController;
 import banksys.control.exception.BankTransactionException;
 import banksys.persistence.AccountVector;
+import banksys.persistence.SQLiteAccounts;
 
 public class ATM24H {
 
 	private static Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		BankController bank = new BankController(new AccountVector());
+		BankController bank = new BankController(new SQLiteAccounts());
 		boolean loop = true;
 		while (loop) {
 			switch (mainMenu()) {
@@ -152,15 +153,15 @@ public class ATM24H {
 
 	private static int mainMenu() {
 		System.out.println("================================");
-		System.out.println("Wellcome to the Our Bank");
+		System.out.println("Welcome to the Our Bank");
 		System.out.println("Automated Teller Machine");
 		System.out.println("================================");
-		System.out.println(" [1] Add New OrdinaryAccount");
+		System.out.println(" [1] Add New Account");
 		System.out.println(" [2] Do Credit");
 		System.out.println(" [3] Do Debit");
 		System.out.println(" [4] Do Transfer");
 		System.out.println(" [5] Show Balance");
-		System.out.println(" [6] Remove OrdinaryAccount");
+		System.out.println(" [6] Remove Account");
 		System.out.println(" [7] Earn Iterest");
 		System.out.println(" [8] Earn Bonus");
 		System.out.println(" [9] Exit");
@@ -172,7 +173,7 @@ public class ATM24H {
 
 	private static int addAccountMenu() {
 		System.out.println("================================");
-		System.out.println("Add New OrdinaryAccount");
+		System.out.println("Add New Account");
 		System.out.println("================================");
 		System.out.println(" [1] Ordinary");
 		System.out.println(" [2] Special");

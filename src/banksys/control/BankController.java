@@ -23,7 +23,7 @@ public class BankController {
 	public void addAccount(AbstractAccount account) throws BankTransactionException {
 		try {
 			this.repository.create(account);
-		} catch (AccountCreationException ace) {
+		} catch (AccountCreationException | AccountNotFoundException ace) {
 			throw new BankTransactionException(ace);
 		}
 	}
@@ -31,7 +31,7 @@ public class BankController {
 	public void removeAccount(String number) throws BankTransactionException {
 		try {
 			this.repository.delete(number);
-		} catch (AccountDeletionException ade) {
+		} catch (AccountDeletionException | AccountNotFoundException ade) {
 			throw new BankTransactionException(ade);
 		}
 	}
@@ -45,10 +45,15 @@ public class BankController {
 		}
 		try {
 			account.credit(amount);
+			
 		} catch (NegativeAmountException nae) {
 			throw new BankTransactionException(nae);
 		}
-
+		try {
+			this.repository.update(account);
+		} catch (AccountNotFoundException e) {
+			throw new BankTransactionException(e);
+		}
 	}
 
 	public void doDebit(String number, double amount) throws BankTransactionException {
@@ -60,10 +65,9 @@ public class BankController {
 		}
 		try {
 			account.debit(amount);
-		} catch (InsufficientFundsException ife) {
-			throw new BankTransactionException(ife);
-		} catch (NegativeAmountException nae) {
-			throw new BankTransactionException(nae);
+			this.repository.update(account);
+		} catch (InsufficientFundsException | AccountNotFoundException | NegativeAmountException e) {
+			throw new BankTransactionException(e);
 		}
 	}
 
@@ -96,10 +100,14 @@ public class BankController {
 		try {
 			fromAccount.debit(amount);
 			toAccount.credit(amount);
+			this.repository.update(fromAccount);
+			this.repository.update(toAccount);
 		} catch (InsufficientFundsException sie) {
 			throw new BankTransactionException(sie);
 		} catch (NegativeAmountException nae) {
 			throw new BankTransactionException(nae);
+		} catch (AccountNotFoundException anfe) {
+			throw new BankTransactionException(anfe);
 		}
 	}
 
@@ -113,6 +121,11 @@ public class BankController {
 
 		if (auxAccount instanceof SavingsAccount) {
 			((SavingsAccount) auxAccount).earnInterest();
+			try {
+				this.repository.update(auxAccount);
+			} catch (AccountNotFoundException anfe) {
+				throw new BankTransactionException(anfe);
+			}
 		} else {
 			throw new IncompatibleAccountException(number);
 		}
@@ -128,6 +141,11 @@ public class BankController {
 
 		if (auxAccount instanceof SpecialAccount) {
 			((SpecialAccount) auxAccount).earnBonus();
+			try {
+				this.repository.update(auxAccount);
+			} catch (AccountNotFoundException anfe) {
+				throw new BankTransactionException(anfe);
+			}
 		} else {
 			throw new IncompatibleAccountException(number);
 		}
