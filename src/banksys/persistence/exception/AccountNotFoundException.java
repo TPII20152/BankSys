@@ -4,8 +4,8 @@ public class AccountNotFoundException extends PersistenceException {
 
 	private static final long serialVersionUID = 1L;
 
-	public AccountNotFoundException(String message, String number) {
-		super(message, number);
+	public AccountNotFoundException(String number) {
+		super("Account not found! ", number);
 	}
 
 }

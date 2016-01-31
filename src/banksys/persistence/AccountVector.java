@@ -52,7 +52,7 @@ public class AccountVector implements IAccountRepository {
 		if (account != null) {
 			return account;
 		} else {
-			throw new AccountNotFoundException("OrdinaryAccount not found!", number);
+			throw new AccountNotFoundException(number);
 		}
 	}
 
@@ -67,4 +67,23 @@ public class AccountVector implements IAccountRepository {
 		}
 		return null;
 	}
+
+	@Override
+	public void update(AbstractAccount newData) throws AccountNotFoundException {
+		if (this.accounts.size() > 0) {
+			boolean found = false;
+			for (int i = 0; i < this.accounts.size(); i++) {
+				AbstractAccount account = (AbstractAccount) this.accounts.elementAt(i);
+				if (account.getNumber().equals(newData.getNumber())) {
+					this.accounts.setElementAt(newData, i);
+					found = true;
+					break;
+				}
+				if(found) break;
+			}
+			if(!found) throw new AccountNotFoundException(newData.getNumber());
+		}
+		
+	}
+	
 }
