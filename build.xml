@@ -1,10 +1,10 @@
-<project name="SB02" basedir="." default="test">
+<project name="BankSys" basedir="." default="test">
     <property name="dir.src"     value="src"/>
     <property name="dir.build"   value="build"/>
     <property name="dir.classes" value="${dir.build}/classes"/>
     <property name="dir.jar"     value="${dir.build}/jar"/>
     <property name="libDir" 	 value="lib" />
-    <property name="testDir" value="teste" />
+    <property name="testDir" value="test" />
     <property name="reportDir" value="${buildDir}/report" />
 
     <property name="main-class"  value="br.ufc.banco.bb.TAAB24H"/>
@@ -47,7 +47,7 @@
 
 			<batchtest fork="yes" todir="${reportDir}">
 				<fileset dir="${testDir}">
-					<include name="**/*Teste*.java" />
+					<include name="**/*Test*.java" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -58,5 +58,5 @@
     </target>
 
     <target name="clean-build" depends="clean,jar"/>
-    <target name="main" depends="clean,run"/>
+    <target name="main" depends="clean-build,run"/>
 </project>
