@@ -6,9 +6,15 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import banksys.control.BankController;
+import banksys.control.exception.BankTransactionException;
+import banksys.persistence.SQLiteAccounts;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Window.Type;
@@ -20,12 +26,14 @@ public class FormSaque extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtNumConta;
-	private JTextField txtNumDeposito;
-
+	private JTextField txtSaque;
+	private BankController bank;
+	
 	/**
 	 * Create the frame.
 	 */
 	public FormSaque() {
+		bank = new BankController(new SQLiteAccounts());
 		setType(Type.UTILITY);
 		setTitle("SAQUE");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -44,10 +52,10 @@ public class FormSaque extends JFrame {
 		txtNumConta = new JTextField();
 		txtNumConta.setColumns(10);
 		
-		JLabel label_1 = new JLabel("DEP\u00D3SITO");
+		JLabel lblValorDoSaque = new JLabel("VALOR DO SAQUE");
 		
-		txtNumDeposito = new JTextField();
-		txtNumDeposito.setColumns(10);
+		txtSaque = new JTextField();
+		txtSaque.setColumns(10);
 		
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
@@ -57,20 +65,37 @@ public class FormSaque extends JFrame {
 		});
 		
 		JButton btnDepositar = new JButton("Sacar");
+		btnDepositar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				double valor;
+				try{
+					valor = Double.parseDouble(txtSaque.getText().toString());
+				}catch(Exception ex){
+					Object[] options = {"OK"};
+					JOptionPane.showOptionDialog(null, "Valor inválido!", "Erro", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+					return;
+				}
+				try {
+					bank.doDebit(txtNumConta.getText().toString(),valor);
+				} catch (BankTransactionException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addComponent(txtNumDeposito, GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
+						.addComponent(txtSaque, GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
 						.addComponent(txtNumConta, GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
 						.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
 							.addComponent(btnCancelar, GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnDepositar, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE))
 						.addComponent(label, GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
-						.addComponent(label_1, GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE))
+						.addComponent(lblValorDoSaque, GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
@@ -81,9 +106,9 @@ public class FormSaque extends JFrame {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(txtNumConta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(label_1)
+					.addComponent(lblValorDoSaque)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(txtNumDeposito, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(txtSaque, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnDepositar)

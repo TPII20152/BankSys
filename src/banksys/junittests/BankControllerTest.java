@@ -14,6 +14,7 @@ import banksys.control.BankController;
 import banksys.control.exception.BankTransactionException;
 import banksys.persistence.AccountVector;
 import banksys.persistence.IAccountRepository;
+import banksys.persistence.SQLiteAccounts;
 import banksys.persistence.exception.AccountCreationException;
 import banksys.persistence.exception.AccountDeletionException;
 import banksys.persistence.exception.AccountNotFoundException;
@@ -25,7 +26,7 @@ public class BankControllerTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		bank = new BankController(new AccountVector());
+		bank = new BankController(new SQLiteAccounts());
 		acc = new OrdinaryAccount("1");
 		bank.addAccount(acc);
 	}

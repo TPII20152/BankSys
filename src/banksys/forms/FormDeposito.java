@@ -7,11 +7,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+
+import banksys.control.BankController;
+import banksys.control.exception.BankTransactionException;
+import banksys.persistence.SQLiteAccounts;
 
 import java.awt.Window.Type;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
@@ -23,12 +29,12 @@ public class FormDeposito extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtNumConta;
 	private JTextField txtDeposito;
-	//private SQLiteContas database;
+	private BankController bank;
 	/**
 	 * Create the frame.
 	 */
 	public FormDeposito() {
-		//database = new SQLiteContas();
+		bank = new BankController(new SQLiteAccounts());
 		setType(Type.UTILITY);
 		setTitle("DEP\u00D3SITO");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -62,7 +68,20 @@ public class FormDeposito extends JFrame {
 		JButton btnDepositar = new JButton("Depositar");
 		btnDepositar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				double valor;
+				try{
+					valor = Double.parseDouble(txtDeposito.getText().toString());
+				}catch(Exception ex){
+					Object[] options = {"OK"};
+					JOptionPane.showOptionDialog(null, "Valor inválido!", "Erro", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+					return;
+				}
+				try{
+					bank.doCredit(txtNumConta.getText().toString(), valor);
+				}
+				catch(BankTransactionException ex){
+					
+				}
 			}
 		});
 		GroupLayout gl_panel = new GroupLayout(panel);

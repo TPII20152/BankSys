@@ -6,6 +6,12 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import banksys.control.BankController;
+import banksys.control.exception.BankTransactionException;
+import banksys.control.exception.IncompatibleAccountException;
+import banksys.persistence.SQLiteAccounts;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -17,11 +23,13 @@ public class FormRenderJuros extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtNumConta;
+	private BankController bank;
 
 	/**
 	 * Create the frame.
 	 */
 	public FormRenderJuros() {
+		bank = new BankController(new SQLiteAccounts());
 		setType(Type.UTILITY);
 		setTitle("RENDER JUROS");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -55,6 +63,17 @@ public class FormRenderJuros extends JFrame {
 		panel.add(btnVoltar);
 		
 		JButton btnRenderJuros = new JButton("Render Juros");
+		btnRenderJuros.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					bank.doEarnInterest(txtNumConta.getText().toString());
+				} catch (IncompatibleAccountException e1) {
+					e1.printStackTrace();
+				} catch (BankTransactionException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnRenderJuros.setBounds(113, 67, 117, 23);
 		panel.add(btnRenderJuros);
 	}

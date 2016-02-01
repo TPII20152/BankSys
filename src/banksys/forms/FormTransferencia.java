@@ -6,10 +6,16 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import banksys.control.BankController;
+import banksys.control.exception.BankTransactionException;
+import banksys.persistence.SQLiteAccounts;
+
 import java.awt.Window.Type;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -22,11 +28,13 @@ public class FormTransferencia extends JFrame {
 	private JTextField txtNumContaOrigem;
 	private JTextField txtNumContaDestino;
 	private JTextField txtDeposito;
+	private BankController bank;
 
 	/**
 	 * Create the frame.
 	 */
 	public FormTransferencia() {
+		bank = new BankController(new SQLiteAccounts());
 		setType(Type.UTILITY);
 		setTitle("TRANSFER\u00CANCIA");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -63,6 +71,23 @@ public class FormTransferencia extends JFrame {
 		});
 		
 		JButton btnTransferir = new JButton("Transferir");
+		btnTransferir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				double valor;
+				try{
+					valor = Double.parseDouble(txtDeposito.getText().toString());
+				}catch(Exception ex){
+					Object[] options = {"OK"};
+					JOptionPane.showOptionDialog(null, "Valor inválido!", "Erro", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+					return;
+				}
+				try {
+					bank.doTransfer(txtNumContaOrigem.getText().toString(), txtNumContaDestino.getText().toString(),valor);
+				} catch (BankTransactionException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)

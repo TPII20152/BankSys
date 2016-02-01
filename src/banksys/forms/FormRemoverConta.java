@@ -6,6 +6,11 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import banksys.control.BankController;
+import banksys.control.exception.BankTransactionException;
+import banksys.persistence.SQLiteAccounts;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -17,11 +22,13 @@ public class FormRemoverConta extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtNumConta;
+	private BankController bank;
 
 	/**
 	 * Create the frame.
 	 */
 	public FormRemoverConta() {
+		bank = new BankController(new SQLiteAccounts());
 		setTitle("REMOVER CONTA");
 		setType(Type.UTILITY);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -55,6 +62,15 @@ public class FormRemoverConta extends JFrame {
 		panel.add(btnVoltar);
 		
 		JButton btnRemover = new JButton("Remover");
+		btnRemover.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					bank.removeAccount(txtNumConta.getText().toString());
+				} catch (BankTransactionException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnRemover.setBounds(109, 67, 94, 23);
 		panel.add(btnRemover);
 	}

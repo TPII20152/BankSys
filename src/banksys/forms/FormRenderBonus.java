@@ -6,6 +6,12 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import banksys.control.BankController;
+import banksys.control.exception.BankTransactionException;
+import banksys.control.exception.IncompatibleAccountException;
+import banksys.persistence.SQLiteAccounts;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -17,27 +23,13 @@ public class FormRenderBonus extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtNumConta;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FormRenderBonus frame = new FormRenderBonus();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private BankController bank;
 
 	/**
 	 * Create the frame.
 	 */
 	public FormRenderBonus() {
+		bank = new BankController(new SQLiteAccounts());
 		setTitle("RENDER B\u00D4NUS");
 		setType(Type.UTILITY);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -70,7 +62,18 @@ public class FormRenderBonus extends JFrame {
 		btnVoltar.setBounds(10, 67, 89, 23);
 		panel.add(btnVoltar);
 		
-		JButton btnRenderBonus = new JButton("Render Juros");
+		JButton btnRenderBonus = new JButton("Render B\u00F4nus");
+		btnRenderBonus.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					bank.doEarnBonus(txtNumConta.getText().toString());
+				} catch (IncompatibleAccountException e1) {
+					e1.printStackTrace();
+				} catch (BankTransactionException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnRenderBonus.setBounds(109, 67, 116, 23);
 		panel.add(btnRenderBonus);
 	}

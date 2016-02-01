@@ -9,6 +9,7 @@ import banksys.account.SpecialAccount;
 import banksys.account.TaxAccount;
 import banksys.control.BankController;
 import banksys.control.exception.BankTransactionException;
+import banksys.forms.MainForm;
 import banksys.persistence.AccountVector;
 import banksys.persistence.SQLiteAccounts;
 
@@ -17,7 +18,10 @@ public class ATM24H {
 	private static Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		BankController bank = new BankController(new SQLiteAccounts());
+		
+		MainForm menu = new MainForm();
+		menu.setVisible(true);
+		/*BankController bank = new BankController(new SQLiteAccounts());
 		boolean loop = true;
 		while (loop) {
 			switch (mainMenu()) {
@@ -148,7 +152,7 @@ public class ATM24H {
 			default:
 				break;
 			}
-		}
+		}*/
 	}
 
 	private static int mainMenu() {

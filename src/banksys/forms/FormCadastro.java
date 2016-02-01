@@ -12,6 +12,8 @@ import banksys.account.OrdinaryAccount;
 import banksys.account.SavingsAccount;
 import banksys.account.SpecialAccount;
 import banksys.account.TaxAccount;
+import banksys.control.BankController;
+import banksys.persistence.SQLiteAccounts;
 
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
@@ -30,13 +32,13 @@ public class FormCadastro extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtNumConta;
-	//private SQLiteContas database;
+	private BankController bank;
 
 	/**
 	 * Create the frame.
 	 */
 	public FormCadastro() {
-		//database = new SQLiteContas();
+		bank = new BankController(new SQLiteAccounts());
 		setType(Type.UTILITY);
 		setTitle("CADASTRO");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -126,7 +128,7 @@ public class FormCadastro extends JFrame {
 					else{
 						conta = new SavingsAccount(txtNumConta.getText());
 					}
-					//database.inserir(conta);
+					bank.addAccount(conta);
 				}
 				catch(Exception ex){
 					ex.printStackTrace();

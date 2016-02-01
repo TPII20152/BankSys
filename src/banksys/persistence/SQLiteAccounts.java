@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.JOptionPane;
+
 import banksys.account.AbstractAccount;
 import banksys.account.OrdinaryAccount;
 import banksys.account.SavingsAccount;
@@ -24,7 +26,6 @@ public class SQLiteAccounts implements IAccountRepository{
 	public static final int SPECIAL_ACCOUNT = 2;
 	public static final int SAVINGS_ACCOUNT = 3;
 	public static final int TAX_ACCOUNT = 4;
-	
 	public SQLiteAccounts() {
 		super();
 	}
@@ -78,7 +79,7 @@ public class SQLiteAccounts implements IAccountRepository{
 			          stmt.close();
 			          connection.close();
 			        } catch ( SQLException e ) {
-			          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+			        	System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 			        }
 			        
 			  } else {
