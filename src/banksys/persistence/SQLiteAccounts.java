@@ -5,8 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
+
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 import banksys.account.AbstractAccount;
 import banksys.account.OrdinaryAccount;
@@ -22,6 +25,7 @@ public class SQLiteAccounts implements IAccountRepository{
 	private Connection connection;
 	public static final String TABLE_ACCOUNTS = "accounts";
 	public static final String TABLE_BONUS = "bonus";
+	public static final String TABLE_LOG = "log";
 	public static final int ORDINARY_ACCOUNT = 1;
 	public static final int SPECIAL_ACCOUNT = 2;
 	public static final int SAVINGS_ACCOUNT = 3;
@@ -43,6 +47,13 @@ public class SQLiteAccounts implements IAccountRepository{
 	                       " balance  REAL NOT NULL, " + 
 	                       " type   INTEGER     NOT NULL) ";
 	          stmt.executeUpdate(sqlTables);
+	          stmt.close();
+	          
+	          String sqlLog = "CREATE TABLE IF NOT EXISTS " + TABLE_LOG+
+                      " (id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                      " number  TEXT, " + 
+                      " message TEXT NOT NULL) ";
+	          stmt.executeUpdate(sqlLog);
 	          stmt.close();
 	          stmt = connection.createStatement();
 				
@@ -287,4 +298,44 @@ public SpecialAccount createSpecialAccount(String num,double bonus){
         }
 		return number;
 	}
+	
+	public void insertLog(String numAccount, String message)
+	  {
+		String sql = "INSERT INTO "+  TABLE_LOG + " (number,message) VALUES('"+ numAccount +"','"+ message+ "')";  
+	    try {
+	    	connection = SQLiteConnector.getConnection();
+	    	Statement stmt = null;
+	    	stmt = connection.createStatement();
+	    	stmt.executeUpdate(sql);
+	        stmt.close();
+	        connection.close();
+	    } catch ( SQLException e ) {
+	      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	    }
+	  }
+	
+	public ArrayList searchLog(String number)
+	  {
+		String sql = "SELECT * FROM " +  TABLE_LOG + " WHERE number = '" + number + "'";  
+	    ArrayList<String[]> lista = new ArrayList<String[]>();
+	    String[] saida;
+		try {
+	    	connection = SQLiteConnector.getConnection();
+	    	Statement stmt = null;
+	    	stmt = connection.createStatement();
+	    	ResultSet rs = stmt.executeQuery(sql);
+	    	while(rs.next()){
+	    		saida = new String[2];
+	    		saida[0] = rs.getString("number");
+	    		saida[1] = rs.getString("message");
+	    		lista.add(saida);
+	    	}
+	        stmt.close();
+	        connection.close();
+	        return lista;
+	    } catch ( SQLException e ) {
+	      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	      return null;
+	    }
+	  }
 }

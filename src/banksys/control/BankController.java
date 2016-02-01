@@ -22,12 +22,20 @@ public class BankController {
 	private static final String NOT_SAVINGS_ACCOUNT = "Account is not a Savings Account!";
 	private static final String NOT_SPECIAL_ACCOUNT = "Account is not a Special Account!";
 	private static final String OPERATION_NOT_DONE = "Operation not done!";
+	private static final String OPERATION_DONE = "Operation done!";
 	private static final String ACCOUNT_REMOVED = "Account removed!";
 	private static final String ACCOUNT_ALREADY_EXISTS = "Account already exists";
 	private static final String ERROR = "Error";
 	private static final String ACCOUNT_NOT_FOUND = "Account not found!";
 	private static final String WARNING = "Warning";
 	private static final String ACCOUNT_CREATED = "Account created";
+	private static final String DO_CREDIT = "Credited the value of ";
+	private static final String DO_DEBIT = "Debited the value of ";
+	private static final String GET_BALANCE = "Get Balance";
+	private static final String DO_TRANSFER_VALUE= "Transferred the value of ";
+	private static final String DO_TRANSFER_TO = " To account ";
+	private static final String DO_EARN_INTEREST = "Earn interest";
+	private static final String DO_EARN_BONUS = "Earn bonus";
 	private SQLiteAccounts repository;
 	private static final Object[] options = {"OK"};
 
@@ -39,6 +47,8 @@ public class BankController {
 		try {
 			this.repository.create(account);
 			JOptionPane.showOptionDialog(null, ACCOUNT_CREATED, WARNING, JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			String message = ACCOUNT_CREATED;
+			this.repository.insertLog(account.getNumber(), message);
 		} catch (AccountCreationException ace) {
 			JOptionPane.showOptionDialog(null, ACCOUNT_ALREADY_EXISTS, ERROR, JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 			throw new BankTransactionException(ace);
@@ -49,6 +59,8 @@ public class BankController {
 		try {
 			this.repository.delete(number);
 			JOptionPane.showOptionDialog(null, ACCOUNT_REMOVED, WARNING, JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			String message = ACCOUNT_REMOVED;
+			this.repository.insertLog(number, message);
 		} catch (AccountDeletionException | AccountNotFoundException ade) {
 			JOptionPane.showOptionDialog(null, ACCOUNT_NOT_FOUND, ERROR, JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 			throw new BankTransactionException(ade);
@@ -70,7 +82,9 @@ public class BankController {
 		}
 		try {
 			this.repository.update(account);
-			JOptionPane.showOptionDialog(null, OPERATION_NOT_DONE, WARNING, JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, OPERATION_DONE, WARNING, JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			String message = DO_CREDIT + amount;
+			this.repository.insertLog(number, message);
 		} catch (Exception e) {
 			throw new BankTransactionException(e);
 		}
@@ -86,7 +100,9 @@ public class BankController {
 		try {
 			account.debit(amount);
 			this.repository.update(account);
-			JOptionPane.showOptionDialog(null, OPERATION_NOT_DONE, WARNING, JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, OPERATION_DONE, WARNING, JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			String message = DO_DEBIT + amount;
+			this.repository.insertLog(number, message);
 		} catch (InsufficientFundsException | NegativeAmountException e) {
 			throw new BankTransactionException(e);
 		}
@@ -96,6 +112,8 @@ public class BankController {
 		AbstractAccount conta;
 		try {
 			conta = this.repository.retrieve(number);
+			String message = GET_BALANCE;
+			this.repository.insertLog(number, message);
 			return conta.getBalance();
 		} catch (AccountNotFoundException anfe) {
 			JOptionPane.showOptionDialog(null, ACCOUNT_NOT_FOUND, ERROR, JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
@@ -126,7 +144,9 @@ public class BankController {
 			toAccount.credit(amount);
 			this.repository.update(fromAccount);
 			this.repository.update(toAccount);
-			JOptionPane.showOptionDialog(null, OPERATION_NOT_DONE, WARNING, JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, OPERATION_DONE, WARNING, JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			String message = DO_TRANSFER_VALUE + amount + DO_TRANSFER_TO + toNumber;
+			this.repository.insertLog(fromNumber, message);
 		} catch (InsufficientFundsException sie) {
 			throw new BankTransactionException(sie);
 		} catch (NegativeAmountException nae) {
@@ -152,7 +172,9 @@ public class BankController {
 			} catch (Exception anfe) {
 				throw new BankTransactionException(anfe);
 			}
-			JOptionPane.showOptionDialog(null, OPERATION_NOT_DONE, WARNING, JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, OPERATION_DONE, WARNING, JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			String message = DO_EARN_INTEREST;
+			this.repository.insertLog(number, message);
 		} else {
 			JOptionPane.showOptionDialog(null, NOT_SAVINGS_ACCOUNT, ERROR, JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 			throw new IncompatibleAccountException(number);
@@ -175,7 +197,9 @@ public class BankController {
 			} catch (Exception anfe) {
 				throw new BankTransactionException(anfe);
 			}
-			JOptionPane.showOptionDialog(null, OPERATION_NOT_DONE, WARNING, JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, OPERATION_DONE, WARNING, JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			String message = DO_EARN_BONUS;
+			this.repository.insertLog(number, message);
 		} else {
 			JOptionPane.showOptionDialog(null, NOT_SPECIAL_ACCOUNT, ERROR, JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 			throw new IncompatibleAccountException(number);
