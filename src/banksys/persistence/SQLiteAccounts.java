@@ -46,7 +46,7 @@ public class SQLiteAccounts implements IAccountRepository{
 	          stmt = connection.createStatement();
 				
 	          String sqlBonus = "CREATE TABLE IF NOT EXISTS " + TABLE_BONUS+
-	                       " (number INTEGER PRIMARY KEY ," +
+	                       " (number TEXT PRIMARY KEY ," +
 	                       " bonus  REAL NOT NULL) "; 
 	          stmt.executeUpdate(sqlBonus);
 	          stmt.close();
@@ -72,7 +72,7 @@ public class SQLiteAccounts implements IAccountRepository{
 			          stmt = connection.createStatement();
 			          String sql = "INSERT INTO "+  TABLE_ACCOUNTS + "(number,balance,type) " + values;
 			          if(getType(account)==SPECIAL_ACCOUNT){
-				    	  insertBonus((SpecialAccount) account);
+				    	  insertBonus((SpecialAccount) account, connection);
 				      }             
 			          stmt.executeUpdate(sql);
 			          stmt.close();
@@ -99,16 +99,9 @@ public class SQLiteAccounts implements IAccountRepository{
 		             double  balance = rs.getDouble("balance");
 		             int type = rs.getInt("type");
 		             if(type == SPECIAL_ACCOUNT){
-		            	 Statement stmtBonus = connection.createStatement();
-		            	 ResultSet rsBonus = stmtBonus.executeQuery( "SELECT bonus FROM "+TABLE_BONUS+
-		  							" WHERE number = '"+ number+"';");
-		            	 if(rsBonus.next()){
-		            		 double bonus = rs.getDouble("bonus");
-		            		 account = createSpecialAccount(num, bonus);
-				             account.setBalance(balance); 
-				             }
-		            	 rsBonus.close();
-		            	 stmtBonus.close();	 
+		            	 double bonus = retrieveBonus(number, connection);
+		            	 account = createSpecialAccount(num, bonus);
+			             account.setBalance(balance);
 		             } else{
 		            	 account = createAccount(type, num);
 			             account.setBalance(balance); 
@@ -122,22 +115,30 @@ public class SQLiteAccounts implements IAccountRepository{
 	        }
 	        return account;
 	  }
+
+	public double retrieveBonus(String number, Connection connection){
+		double bonus = 0.0;
+		try(Statement stmtBonus = connection.createStatement();
+				 ResultSet rsBonus = stmtBonus.executeQuery( "SELECT * FROM "+TABLE_BONUS+
+							" WHERE number = '"+ number+"';")){
+		
+		 if(rsBonus.next()){
+			 bonus = rsBonus.getDouble("bonus");
+		     }
+		} catch (SQLException e){
+			System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+		}
+		return bonus;
+	}
 	  
-	  public void insertBonus(SpecialAccount account)
+	  public void insertBonus(SpecialAccount account, Connection connection)
 	  {
-	    try {
-	      connection = SQLiteConnector.getConnection();  
-	      String sql = "INSERT INTO "+  TABLE_BONUS + " (number,bonus) VALUES(?,?)";
-	      PreparedStatement pstmt = connection.prepareStatement(sql);
+		String sql = "INSERT INTO "+  TABLE_BONUS + " (number,bonus) VALUES(?,?)";  
+	    try(PreparedStatement pstmt = connection.prepareStatement(sql)) {
+	      
 	      pstmt.setString(1, account.getNumber());
 	      pstmt.setDouble(2, account.getBonus());
-	      //String values = "VALUES ("+account.getNumber() + ", "+ account.getBonus()+");";
-          //stmt = connection.createStatement();
-          
-	      //connection.commit();
           pstmt.executeUpdate();
-	      pstmt.close();
-	      connection.close();
 	    } catch ( SQLException e ) {
 	      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 	    }
@@ -149,11 +150,11 @@ public class SQLiteAccounts implements IAccountRepository{
 	    Statement stmt = null;
 	    try {
 	      stmt = connection.createStatement();
-	      String sql = "UPDATE "+TABLE_ACCOUNTS+" set balance="+account.getBalance() + " WHERE number="+account.getNumber()+";";
+	      String sql = "UPDATE "+TABLE_ACCOUNTS+" set balance="+account.getBalance() + " WHERE number='"+account.getNumber()+"';";
 	      stmt.executeUpdate(sql);
 	      //connection.commit();
 	      if(getType(account)==SPECIAL_ACCOUNT){
-	    	  updateBonus((SpecialAccount) account);
+	    	  updateBonus((SpecialAccount) account, connection);
 	      }
 	      stmt.close();
 	      connection.close();
@@ -163,22 +164,15 @@ public class SQLiteAccounts implements IAccountRepository{
 	    }
 	  }
 	  
-	  public void updateBonus(SpecialAccount account)
+	  public void updateBonus(SpecialAccount account, Connection connection)
 	  {
-	    try{
-	      connection = SQLiteConnector.getConnection();  
-		  Statement stmt = null;  
-	      stmt = connection.createStatement();
-	      //String values = "VALUES ("
-	      String sql = "UPDATE "+TABLE_BONUS+" set bonus="+account.getBonus() + " WHERE number="+account.getNumber()+";";
-	      stmt.executeUpdate(sql);
-	      //connection.commit();
-	 
-	      stmt.close();
-	      connection.close();
+		String sql = "UPDATE "+TABLE_BONUS+" set bonus=? WHERE number=?";
+	    try(PreparedStatement pstmt = connection.prepareStatement(sql)){
+	      pstmt.setDouble(1, account.getBonus());
+	      pstmt.setString(2, account.getNumber());
+	      pstmt.executeUpdate();
 	    } catch ( SQLException e ) {
 	      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-	      System.exit(0);
 	    }
 	  }
 	  
