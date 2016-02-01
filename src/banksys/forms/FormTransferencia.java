@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 
 public class FormTransferencia extends JFrame {
 
+	private static final String INVALID_VALUE = "Valor invAlido!";
 	private JPanel contentPane;
 	private JTextField txtNumContaOrigem;
 	private JTextField txtNumContaDestino;
@@ -78,7 +79,7 @@ public class FormTransferencia extends JFrame {
 					valor = Double.parseDouble(txtDeposito.getText().toString());
 				}catch(Exception ex){
 					Object[] options = {"OK"};
-					JOptionPane.showOptionDialog(null, "Valor inválido!", "Erro", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+					JOptionPane.showOptionDialog(null, INVALID_VALUE, "Erro", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 					return;
 				}
 				try {

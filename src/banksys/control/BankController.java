@@ -17,6 +17,17 @@ import banksys.persistence.exception.AccountNotFoundException;
 
 public class BankController {
 
+	private static final String DESTINATION_ACCOUNT_NOT_FOUND = "destination account not found";
+	private static final String ORIGIN_ACCOUNT_NOT_FOUND = "origin account not found";
+	private static final String NOT_SAVINGS_ACCOUNT = "Account is not a Savings Account!";
+	private static final String NOT_SPECIAL_ACCOUNT = "Account is not a Special Account!";
+	private static final String OPERATION_NOT_DONE = "Operation not done!";
+	private static final String ACCOUNT_REMOVED = "Account removed!";
+	private static final String ACCOUNT_ALREADY_EXISTS = "Account already exists";
+	private static final String ERROR = "Error";
+	private static final String ACCOUNT_NOT_FOUND = "Account not found!";
+	private static final String WARNING = "Warning";
+	private static final String ACCOUNT_CREATED = "Account created";
 	private SQLiteAccounts repository;
 	private static final Object[] options = {"OK"};
 
@@ -27,9 +38,9 @@ public class BankController {
 	public void addAccount(AbstractAccount account) throws BankTransactionException {
 		try {
 			this.repository.create(account);
-			JOptionPane.showOptionDialog(null, "Conta cadastrada!", "Aviso", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, ACCOUNT_CREATED, WARNING, JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 		} catch (AccountCreationException ace) {
-			JOptionPane.showOptionDialog(null, "Conta já cadastrada!", "Erro", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, ACCOUNT_ALREADY_EXISTS, ERROR, JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 			throw new BankTransactionException(ace);
 		}
 	}
@@ -37,9 +48,9 @@ public class BankController {
 	public void removeAccount(String number) throws BankTransactionException {
 		try {
 			this.repository.delete(number);
-			JOptionPane.showOptionDialog(null, "Conta removida!", "Aviso", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, ACCOUNT_REMOVED, WARNING, JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 		} catch (AccountDeletionException | AccountNotFoundException ade) {
-			JOptionPane.showOptionDialog(null, "Conta não cadastrada!", "Erro", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, ACCOUNT_NOT_FOUND, ERROR, JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 			throw new BankTransactionException(ade);
 		}
 	}
@@ -59,7 +70,7 @@ public class BankController {
 		}
 		try {
 			this.repository.update(account);
-			JOptionPane.showOptionDialog(null, "Operação Realizada!", "Aviso", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, OPERATION_NOT_DONE, WARNING, JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 		} catch (Exception e) {
 			throw new BankTransactionException(e);
 		}
@@ -75,7 +86,7 @@ public class BankController {
 		try {
 			account.debit(amount);
 			this.repository.update(account);
-			JOptionPane.showOptionDialog(null, "Operação Realizada!", "Aviso", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, OPERATION_NOT_DONE, WARNING, JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 		} catch (InsufficientFundsException | NegativeAmountException e) {
 			throw new BankTransactionException(e);
 		}
@@ -87,7 +98,7 @@ public class BankController {
 			conta = this.repository.retrieve(number);
 			return conta.getBalance();
 		} catch (AccountNotFoundException anfe) {
-			JOptionPane.showOptionDialog(null, "Conta não cadastrada!", "Erro", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, ACCOUNT_NOT_FOUND, ERROR, JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 			throw new BankTransactionException(anfe);
 		}
 
@@ -98,7 +109,7 @@ public class BankController {
 		try {
 			fromAccount = this.repository.retrieve(fromNumber);
 		} catch (AccountNotFoundException anfe) {
-			JOptionPane.showOptionDialog(null, "Conta origem não cadastrada!", "Erro", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, ORIGIN_ACCOUNT_NOT_FOUND, ERROR, JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 			throw new BankTransactionException(anfe);
 		}
 
@@ -106,7 +117,7 @@ public class BankController {
 		try {
 			toAccount = this.repository.retrieve(toNumber);
 		} catch (AccountNotFoundException anfe) {
-			JOptionPane.showOptionDialog(null, "Conta destino não cadastrada!", "Erro", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, DESTINATION_ACCOUNT_NOT_FOUND, ERROR, JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 			throw new BankTransactionException(anfe);
 		}
 
@@ -115,7 +126,7 @@ public class BankController {
 			toAccount.credit(amount);
 			this.repository.update(fromAccount);
 			this.repository.update(toAccount);
-			JOptionPane.showOptionDialog(null, "Operação Realizada!", "Aviso", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, OPERATION_NOT_DONE, WARNING, JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 		} catch (InsufficientFundsException sie) {
 			throw new BankTransactionException(sie);
 		} catch (NegativeAmountException nae) {
@@ -130,7 +141,7 @@ public class BankController {
 		try {
 			auxAccount = this.repository.retrieve(number);
 		} catch (AccountNotFoundException anfe) {
-			JOptionPane.showOptionDialog(null, "Conta não cadastrada!", "Erro", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, ACCOUNT_NOT_FOUND, ERROR, JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 			throw new BankTransactionException(anfe);
 		}
 
@@ -141,9 +152,9 @@ public class BankController {
 			} catch (Exception anfe) {
 				throw new BankTransactionException(anfe);
 			}
-			JOptionPane.showOptionDialog(null, "Operação Realizada!", "Aviso", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, OPERATION_NOT_DONE, WARNING, JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 		} else {
-			JOptionPane.showOptionDialog(null, "Conta não é do tipo: Poupança!", "Erro", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, NOT_SAVINGS_ACCOUNT, ERROR, JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 			throw new IncompatibleAccountException(number);
 		}
 	}
@@ -153,7 +164,7 @@ public class BankController {
 		try {
 			auxAccount = this.repository.retrieve(number);
 		} catch (AccountNotFoundException anfe) {
-			JOptionPane.showOptionDialog(null, "Conta não cadastrada!", "Erro", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, ACCOUNT_NOT_FOUND, ERROR, JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 			throw new BankTransactionException(anfe);
 		}
 
@@ -164,9 +175,9 @@ public class BankController {
 			} catch (Exception anfe) {
 				throw new BankTransactionException(anfe);
 			}
-			JOptionPane.showOptionDialog(null, "Operação Realizada!", "Aviso", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, OPERATION_NOT_DONE, WARNING, JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 		} else {
-			JOptionPane.showOptionDialog(null, "Conta não é do tipo: Especial!", "Erro", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+			JOptionPane.showOptionDialog(null, NOT_SPECIAL_ACCOUNT, ERROR, JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 			throw new IncompatibleAccountException(number);
 		}
 	}

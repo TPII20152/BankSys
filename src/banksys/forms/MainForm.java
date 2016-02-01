@@ -16,6 +16,16 @@ import java.awt.event.ActionEvent;
 
 public class MainForm extends JFrame {
 
+	private static final String CREATE_ACCOUNT = "CADASTRAR CONTA";
+	private static final String DEPOSIT = "FAZER DEPOSITO";
+	private static final String WITHDRAW = "REALIZAR SAQUE";
+	private static final String TRANSFER = "TRANSFERENCIA";
+	private static final String SHOW_BALANCE = "VISUALIZAR SALDO";
+	private static final String REMOVE_ACCOUNT = "REMOVER CONTA";
+	private static final String EARN_ITEREST = "RENDER JUROS";
+	private static final String EARN_BONUS = "RENDER BONUS";
+	private static final String EXIT = "SAIR";
+	private static final String BANK_SYSTEM = "SISTEMA BANCARIO";
 	private JPanel contentPane;
 	
 	/**
@@ -23,7 +33,7 @@ public class MainForm extends JFrame {
 	 */
 	public MainForm() {
 		setType(Type.UTILITY);
-		setTitle("SISTEMA BANCARIO");
+		setTitle(BANK_SYSTEM);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 377, 300);
 		contentPane = new JPanel();
@@ -36,7 +46,7 @@ public class MainForm extends JFrame {
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
-		JButton btnCadastrarConta = new JButton("CADASTRAR CONTA");
+		JButton btnCadastrarConta = new JButton(CREATE_ACCOUNT);
 		btnCadastrarConta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				FormCadastro cadastro = new FormCadastro();
@@ -46,7 +56,7 @@ public class MainForm extends JFrame {
 		btnCadastrarConta.setBounds(10, 62, 161, 23);
 		panel.add(btnCadastrarConta);
 		
-		JButton btnFazerDeposito = new JButton("FAZER DEPÓSITO");
+		JButton btnFazerDeposito = new JButton(DEPOSIT);
 		btnFazerDeposito.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FormDeposito deposito = new FormDeposito();
@@ -56,7 +66,7 @@ public class MainForm extends JFrame {
 		btnFazerDeposito.setBounds(10, 96, 161, 23);
 		panel.add(btnFazerDeposito);
 		
-		JButton btnRealizarSaque = new JButton("REALIZAR SAQUE");
+		JButton btnRealizarSaque = new JButton(WITHDRAW);
 		btnRealizarSaque.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FormSaque saque = new FormSaque();
@@ -66,7 +76,7 @@ public class MainForm extends JFrame {
 		btnRealizarSaque.setBounds(10, 130, 161, 23);
 		panel.add(btnRealizarSaque);
 		
-		JButton btnTransferencia = new JButton("TRANSFERÊNCIA");
+		JButton btnTransferencia = new JButton(TRANSFER);
 		btnTransferencia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FormTransferencia transferencia = new FormTransferencia();
@@ -76,7 +86,7 @@ public class MainForm extends JFrame {
 		btnTransferencia.setBounds(10, 164, 161, 23);
 		panel.add(btnTransferencia);
 		
-		JButton btnVisualizarSaldo = new JButton("VISUALIZAR SALDO");
+		JButton btnVisualizarSaldo = new JButton(SHOW_BALANCE);
 		btnVisualizarSaldo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				FormSaldo saldo = new FormSaldo();
@@ -86,7 +96,7 @@ public class MainForm extends JFrame {
 		btnVisualizarSaldo.setBounds(181, 62, 161, 23);
 		panel.add(btnVisualizarSaldo);
 		
-		JButton btnRemoverConta = new JButton("REMOVER CONTA");
+		JButton btnRemoverConta = new JButton(REMOVE_ACCOUNT);
 		btnRemoverConta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FormRemoverConta remover = new FormRemoverConta();
@@ -96,7 +106,7 @@ public class MainForm extends JFrame {
 		btnRemoverConta.setBounds(181, 96, 161, 23);
 		panel.add(btnRemoverConta);
 		
-		JButton btnRenderJuros = new JButton("RENDER JUROS");
+		JButton btnRenderJuros = new JButton(EARN_ITEREST);
 		btnRenderJuros.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FormRenderJuros renderJuros = new FormRenderJuros();
@@ -106,7 +116,7 @@ public class MainForm extends JFrame {
 		btnRenderJuros.setBounds(181, 130, 161, 23);
 		panel.add(btnRenderJuros);
 		
-		JButton btnRenderBonus = new JButton("RENDER BÔNUS");
+		JButton btnRenderBonus = new JButton(EARN_BONUS);
 		btnRenderBonus.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FormRenderBonus renderBonus = new FormRenderBonus();
@@ -116,7 +126,7 @@ public class MainForm extends JFrame {
 		btnRenderBonus.setBounds(181, 164, 161, 23);
 		panel.add(btnRenderBonus);
 		
-		JButton btnSair = new JButton("SAIR");
+		JButton btnSair = new JButton(EXIT);
 		btnSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -125,7 +135,7 @@ public class MainForm extends JFrame {
 		btnSair.setBounds(96, 198, 161, 23);
 		panel.add(btnSair);
 		
-		JLabel lblSistemaBancrio = new JLabel("SISTEMA BANCÁRIO");
+		JLabel lblSistemaBancrio = new JLabel(BANK_SYSTEM);
 		lblSistemaBancrio.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblSistemaBancrio.setBounds(73, 11, 208, 23);
 		panel.add(lblSistemaBancrio);

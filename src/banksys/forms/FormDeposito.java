@@ -1,31 +1,27 @@
 package banksys.forms;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
-
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 import banksys.control.BankController;
 import banksys.control.exception.BankTransactionException;
 import banksys.persistence.SQLiteAccounts;
 
-import java.awt.Window.Type;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
 public class FormDeposito extends JFrame {
 
+	private static final String INVALID_VALUE = "Valor invAlido!";
 	private JPanel contentPane;
 	private JTextField txtNumConta;
 	private JTextField txtDeposito;
@@ -73,7 +69,7 @@ public class FormDeposito extends JFrame {
 					valor = Double.parseDouble(txtDeposito.getText().toString());
 				}catch(Exception ex){
 					Object[] options = {"OK"};
-					JOptionPane.showOptionDialog(null, "Valor inválido!", "Erro", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+					JOptionPane.showOptionDialog(null, INVALID_VALUE, "Erro", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 					return;
 				}
 				try{

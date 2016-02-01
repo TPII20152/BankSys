@@ -12,7 +12,7 @@
     <path id="buildClasspath">
 		<pathelement location="${libDir}/junit-4.12.jar" />
 		<pathelement location="${libDir}/sqlite-jdbc-3.8.11.2.jar" />
-		<pathelement location="${classesDir}" />
+		<pathelement location="${dir.classes}" />
 	</path>
 
     <target name="clean">
@@ -35,7 +35,7 @@
 
     <target name="test" depends="clean,compile">
 		<mkdir dir="${reportDir}" />
-		<javac includeantruntime="yes" srcdir="${testDir}" destdir="${classesDir}">
+		<javac includeantruntime="yes" srcdir="${testDir}" destdir="${dir.classes}">
 			<classpath refid="buildClasspath" />
 		</javac>
 
