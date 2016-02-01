@@ -18,7 +18,8 @@ public class ATM24H {
 	private static Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		
+		//SQLiteAccounts sla = new SQLiteAccounts();
+		//sla.createTables();
 		MainForm menu = new MainForm();
 		menu.setVisible(true);
 		/*BankController bank = new BankController(new SQLiteAccounts());

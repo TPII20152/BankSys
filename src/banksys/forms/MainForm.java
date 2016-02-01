@@ -26,6 +26,7 @@ public class MainForm extends JFrame {
 	private static final String EARN_BONUS = "RENDER BONUS";
 	private static final String EXIT = "SAIR";
 	private static final String BANK_SYSTEM = "SISTEMA BANCARIO";
+	private static final String HISTORIC = "HISTORICO";
 	private JPanel contentPane;
 	
 	/**
@@ -132,12 +133,22 @@ public class MainForm extends JFrame {
 				dispose();
 			}
 		});
-		btnSair.setBounds(96, 198, 161, 23);
+		btnSair.setBounds(181, 198, 161, 23);
 		panel.add(btnSair);
 		
 		JLabel lblSistemaBancrio = new JLabel(BANK_SYSTEM);
 		lblSistemaBancrio.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblSistemaBancrio.setBounds(73, 11, 208, 23);
 		panel.add(lblSistemaBancrio);
+		
+		JButton btnHistorico = new JButton(HISTORIC);
+		btnHistorico.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FormHistorico historico = new FormHistorico();
+				historico.setVisible(true);
+			}
+		});
+		btnHistorico.setBounds(10, 198, 161, 23);
+		panel.add(btnHistorico);
 	}
 }
