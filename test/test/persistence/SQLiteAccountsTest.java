@@ -13,6 +13,7 @@ import banksys.account.SpecialAccount;
 import banksys.account.TaxAccount;
 import banksys.persistence.SQLiteAccounts;
 import banksys.persistence.exception.AccountCreationException;
+import banksys.persistence.exception.AccountDeletionException;
 import banksys.persistence.exception.AccountNotFoundException;
 import junit.framework.TestCase;
 
@@ -73,7 +74,7 @@ public class SQLiteAccountsTest extends TestCase {
 	}
 
 	@Test
-	public void testProcurar() {
+	public void testRetrieve() {
 		try {
 			sqliteAccounts.create(ordinaryAccount1);
 			accountsCreated.add(ordinaryAccount1.getNumber());
@@ -106,11 +107,27 @@ public class SQLiteAccountsTest extends TestCase {
 	public void testAtualizarBonus() {
 		fail("Not yet implemented");
 	}
-
+*/
 	@Test
-	public void testApagar() {
-		fail("Not yet implemented");
-	}*/
+	public void testDelete() {
+		
+		try {
+			sqliteAccounts.create(ordinaryAccount1);
+			accountsCreated.add(ordinaryAccount1.getNumber());
+			sqliteAccounts.delete(ordinaryAccount1.getNumber());
+		} catch (AccountCreationException | AccountDeletionException | AccountNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
+		AbstractAccount retrievedAccount;
+		try {
+			retrievedAccount = sqliteAccounts.retrieve(ordinaryAccount1.getNumber());
+			assertNull(retrievedAccount);
+			//assertEquals(ordinaryAccount1.getNumber(), retrievedAccount.getNumber());
+			//assertEquals(ordinaryAccount1.getBalance(), retrievedAccount.getBalance());
+		} catch (AccountNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Test
 	public void testGetType() {
