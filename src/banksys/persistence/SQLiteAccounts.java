@@ -83,7 +83,7 @@ public class SQLiteAccounts implements IAccountRepository{
 			        }
 			        
 			  } else {
-				  throw new AccountCreationException("Error creating account ",account.getNumber());
+				  throw new AccountCreationException("Error creating account! Account Already exists!",account.getNumber());
 			  }
 	  }
 	   
