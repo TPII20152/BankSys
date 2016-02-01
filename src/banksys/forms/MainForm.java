@@ -62,7 +62,7 @@ public class MainForm extends JFrame {
 		btnCadastrarConta.setBounds(10, 62, 161, 23);
 		panel.add(btnCadastrarConta);
 		
-		JButton btnFazerDeposito = new JButton("FAZER DEPï¿½SITO");
+		JButton btnFazerDeposito = new JButton("FAZER DEPÓSITO");
 		btnFazerDeposito.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FormDeposito deposito = new FormDeposito();
@@ -82,7 +82,7 @@ public class MainForm extends JFrame {
 		btnRealizarSaque.setBounds(10, 130, 161, 23);
 		panel.add(btnRealizarSaque);
 		
-		JButton btnTransferencia = new JButton("TRANSFERï¿½NCIA");
+		JButton btnTransferencia = new JButton("TRANSFERÊNCIA");
 		btnTransferencia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FormTransferencia transferencia = new FormTransferencia();
@@ -122,10 +122,11 @@ public class MainForm extends JFrame {
 		btnRenderJuros.setBounds(181, 130, 161, 23);
 		panel.add(btnRenderJuros);
 		
-		JButton btnRenderBonus = new JButton("RENDER Bï¿½NUS");
+		JButton btnRenderBonus = new JButton("RENDER BÔNUS");
 		btnRenderBonus.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FormRenderBonus renderBonus = new FormRenderBonus();
+				renderBonus.setVisible(true);
 			}
 		});
 		btnRenderBonus.setBounds(181, 164, 161, 23);
@@ -140,7 +141,7 @@ public class MainForm extends JFrame {
 		btnSair.setBounds(96, 198, 161, 23);
 		panel.add(btnSair);
 		
-		JLabel lblSistemaBancrio = new JLabel("SISTEMA BANC\u00C1RIO");
+		JLabel lblSistemaBancrio = new JLabel("SISTEMA BANCÁRIO");
 		lblSistemaBancrio.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblSistemaBancrio.setBounds(73, 11, 208, 23);
 		panel.add(lblSistemaBancrio);

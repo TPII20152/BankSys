@@ -32,7 +32,7 @@ public class FormDeposito extends JFrame {
 		setType(Type.UTILITY);
 		setTitle("DEP\u00D3SITO");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 228, 192);
+		setBounds(100, 100, 236, 205);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -52,14 +52,14 @@ public class FormDeposito extends JFrame {
 		txtDeposito = new JTextField();
 		txtDeposito.setColumns(10);
 		
-		JButton btnCancelar = new JButton("CANCELAR");
+		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
 		
-		JButton btnDepositar = new JButton("DEPOSITAR");
+		JButton btnDepositar = new JButton("Depositar");
 		btnDepositar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -67,19 +67,19 @@ public class FormDeposito extends JFrame {
 		});
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+			gl_panel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(txtNumConta, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
-						.addComponent(txtDeposito, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
-						.addGroup(Alignment.LEADING, gl_panel.createParallelGroup(Alignment.LEADING, false)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(txtDeposito, GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
+						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
 							.addComponent(lblNmeroDaConta, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addComponent(lblDepsito))
-						.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
+						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(btnCancelar)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnDepositar, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)))
+							.addComponent(btnDepositar, GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE))
+						.addComponent(txtNumConta, GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
@@ -95,9 +95,9 @@ public class FormDeposito extends JFrame {
 					.addComponent(txtDeposito, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnCancelar)
-						.addComponent(btnDepositar))
-					.addContainerGap(125, Short.MAX_VALUE))
+						.addComponent(btnDepositar)
+						.addComponent(btnCancelar))
+					.addContainerGap(30, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
 	}

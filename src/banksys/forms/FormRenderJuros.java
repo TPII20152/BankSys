@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Window.Type;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class FormRenderJuros extends JFrame {
 
@@ -23,7 +25,7 @@ public class FormRenderJuros extends JFrame {
 		setType(Type.UTILITY);
 		setTitle("RENDER JUROS");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 253, 160);
+		setBounds(100, 100, 266, 160);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -35,20 +37,25 @@ public class FormRenderJuros extends JFrame {
 		panel.setLayout(null);
 		
 		JLabel label = new JLabel("N\u00DAMERO DA CONTA:");
-		label.setBounds(10, 11, 109, 14);
+		label.setBounds(10, 11, 220, 14);
 		panel.add(label);
 		
 		txtNumConta = new JTextField();
 		txtNumConta.setColumns(10);
-		txtNumConta.setBounds(10, 36, 208, 20);
+		txtNumConta.setBounds(10, 36, 220, 20);
 		panel.add(txtNumConta);
 		
-		JButton btnVoltar = new JButton("Voltar");
-		btnVoltar.setBounds(10, 67, 89, 23);
+		JButton btnVoltar = new JButton("Cancelar");
+		btnVoltar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		btnVoltar.setBounds(10, 67, 93, 23);
 		panel.add(btnVoltar);
 		
 		JButton btnRenderJuros = new JButton("Render Juros");
-		btnRenderJuros.setBounds(109, 67, 109, 23);
+		btnRenderJuros.setBounds(113, 67, 117, 23);
 		panel.add(btnRenderJuros);
 	}
 

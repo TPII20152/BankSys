@@ -7,6 +7,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import banksys.account.AbstractAccount;
+import banksys.account.OrdinaryAccount;
+import banksys.account.SavingsAccount;
+import banksys.account.SpecialAccount;
+import banksys.account.TaxAccount;
+
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -104,29 +110,29 @@ public class FormCadastro extends JFrame {
 		});
 		
 		JButton btnCadastrar = new JButton("Cadastrar");
-		/*btnCadastrar.addActionListener(new ActionListener() {
+		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try{
-					ContaAbstrata conta;
+					AbstractAccount conta;
 					if(rdbtnComum.isSelected()){
-						conta = new Conta(txtNumConta.getText());
+						conta = new OrdinaryAccount(txtNumConta.getText());
 					}
 					else if(rdbtnEspecial.isSelected()){
-						conta = new ContaEspecial(txtNumConta.getText());
+						conta = new SpecialAccount(txtNumConta.getText());
 					}
 					else if(rdbtnImposto.isSelected()){
-						conta = new ContaImposto(txtNumConta.getText());
+						conta = new TaxAccount(txtNumConta.getText());
 					}
 					else{
-						conta = new ContaPoupanca(txtNumConta.getText());
+						conta = new SavingsAccount(txtNumConta.getText());
 					}
-					database.inserir(conta);
+					//database.inserir(conta);
 				}
 				catch(Exception ex){
 					ex.printStackTrace();
 				}
 			}
-		});*/
+		});
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)

@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Window.Type;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class FormSaldo extends JFrame {
 
@@ -35,7 +37,7 @@ public class FormSaldo extends JFrame {
 		panel.setLayout(null);
 		
 		JLabel lblNmeroDaConta = new JLabel("N\u00DAMERO DA CONTA:");
-		lblNmeroDaConta.setBounds(10, 11, 109, 14);
+		lblNmeroDaConta.setBounds(10, 11, 185, 14);
 		panel.add(lblNmeroDaConta);
 		
 		textField = new JTextField();
@@ -52,7 +54,12 @@ public class FormSaldo extends JFrame {
 		lblTotal.setVisible(false);
 		panel.add(lblTotal);
 		
-		JButton btnVoltar = new JButton("Voltar");
+		JButton btnVoltar = new JButton("Cancelar");
+		btnVoltar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnVoltar.setBounds(10, 104, 89, 23);
 		panel.add(btnVoltar);
 		

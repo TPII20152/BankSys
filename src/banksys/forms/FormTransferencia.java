@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class FormTransferencia extends JFrame {
 
@@ -53,9 +55,14 @@ public class FormTransferencia extends JFrame {
 		txtDeposito = new JTextField();
 		txtDeposito.setColumns(10);
 		
-		JButton btnNewButton = new JButton("CANCELAR");
+		JButton btnNewButton = new JButton("Cancelar");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		
-		JButton btnTransferir = new JButton("TRANSFERIR");
+		JButton btnTransferir = new JButton("Transferir");
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -63,16 +70,15 @@ public class FormTransferencia extends JFrame {
 					.addContainerGap()
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addComponent(txtDeposito, GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
-						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-							.addComponent(lblNmeroContaOrigem)
-							.addComponent(lblNmeroContaDestino, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblValorADepositar, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE)
-							.addGroup(gl_panel.createSequentialGroup()
-								.addComponent(btnNewButton)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(btnTransferir, GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE))
-							.addComponent(txtNumContaOrigem)
-							.addComponent(txtNumContaDestino)))
+						.addComponent(lblNmeroContaOrigem)
+						.addComponent(lblValorADepositar, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(btnNewButton)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnTransferir, GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
+						.addComponent(txtNumContaOrigem, 187, 187, Short.MAX_VALUE)
+						.addComponent(txtNumContaDestino, 187, 187, Short.MAX_VALUE)
+						.addComponent(lblNmeroContaDestino, GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(

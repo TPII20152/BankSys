@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Window.Type;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class FormRemoverConta extends JFrame {
 
@@ -35,20 +37,25 @@ public class FormRemoverConta extends JFrame {
 		panel.setLayout(null);
 		
 		JLabel label = new JLabel("N\u00DAMERO DA CONTA:");
-		label.setBounds(10, 11, 109, 14);
+		label.setBounds(10, 11, 193, 14);
 		panel.add(label);
 		
 		txtNumConta = new JTextField();
 		txtNumConta.setColumns(10);
-		txtNumConta.setBounds(10, 36, 185, 20);
+		txtNumConta.setBounds(10, 36, 193, 20);
 		panel.add(txtNumConta);
 		
-		JButton btnVoltar = new JButton("Voltar");
+		JButton btnVoltar = new JButton("Cancelar");
+		btnVoltar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnVoltar.setBounds(10, 67, 89, 23);
 		panel.add(btnVoltar);
 		
 		JButton btnRemover = new JButton("Remover");
-		btnRemover.setBounds(109, 67, 89, 23);
+		btnRemover.setBounds(109, 67, 94, 23);
 		panel.add(btnRemover);
 	}
 
