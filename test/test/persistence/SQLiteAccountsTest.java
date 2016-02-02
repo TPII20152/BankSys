@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.BlockJUnit4ClassRunner;
 
 import banksys.account.AbstractAccount;
 import banksys.account.OrdinaryAccount;
@@ -17,6 +19,7 @@ import banksys.persistence.exception.AccountDeletionException;
 import banksys.persistence.exception.AccountNotFoundException;
 import junit.framework.TestCase;
 
+//@RunWith(value=BlockJUnit4ClassRunner.class)
 public class SQLiteAccountsTest extends TestCase {
 	SQLiteAccounts sqliteAccounts;
 	OrdinaryAccount ordinaryAccount1,ordinaryAccount2;
@@ -48,8 +51,8 @@ public class SQLiteAccountsTest extends TestCase {
 
 	@After
 	public void tearDown() throws Exception {
-		for(String numero: accountsCreated){
-			sqliteAccounts.delete(numero);
+		for(String number: accountsCreated){
+			sqliteAccounts.delete(number);
 		}
 		/*sqliteAccounts.delete(c1.getNumber());
 		sqliteAccounts.delete(c2.getNumber());
@@ -70,7 +73,7 @@ public class SQLiteAccountsTest extends TestCase {
 		} catch (AccountCreationException e) {
 			System.out.println(e.getMessage());
 		}
-		assertEquals(number, sqliteAccounts.numberOfAccounts()+1);
+		assertEquals(number+1, sqliteAccounts.numberOfAccounts());
 	}
 
 	@Test
@@ -108,25 +111,20 @@ public class SQLiteAccountsTest extends TestCase {
 		fail("Not yet implemented");
 	}
 */
-	@Test
-	public void testDelete() {
+	
+	public void testDelete(){
 		
 		try {
 			sqliteAccounts.create(ordinaryAccount1);
 			accountsCreated.add(ordinaryAccount1.getNumber());
+			int number = sqliteAccounts.numberOfAccounts();
 			sqliteAccounts.delete(ordinaryAccount1.getNumber());
+			accountsCreated.remove(ordinaryAccount1.getNumber());
+			assertEquals(number-1, sqliteAccounts.numberOfAccounts());
 		} catch (AccountCreationException | AccountDeletionException | AccountNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
-		AbstractAccount retrievedAccount;
-		try {
-			retrievedAccount = sqliteAccounts.retrieve(ordinaryAccount1.getNumber());
-			assertNull(retrievedAccount);
-			//assertEquals(ordinaryAccount1.getNumber(), retrievedAccount.getNumber());
-			//assertEquals(ordinaryAccount1.getBalance(), retrievedAccount.getBalance());
-		} catch (AccountNotFoundException e) {
-			e.printStackTrace();
-		}
+		
 	}
 
 	@Test
