@@ -7,16 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
-
 import banksys.account.AbstractAccount;
 import banksys.account.OrdinaryAccount;
 import banksys.account.SavingsAccount;
 import banksys.account.SpecialAccount;
 import banksys.account.TaxAccount;
-import banksys.account.exception.NegativeAmountException;
 import banksys.persistence.exception.AccountCreationException;
 import banksys.persistence.exception.AccountDeletionException;
 import banksys.persistence.exception.AccountNotFoundException;
