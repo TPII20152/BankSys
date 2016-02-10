@@ -5,7 +5,7 @@
     <property name="dir.jar"     value="${dir.build}/jar"/>
     <property name="libDir" 	 value="lib" />
     <property name="testDir" value="test" />
-    <property name="reportDir" value="${buildDir}/report" />
+    <property name="reportDir" value="${dir.build}/report" />
 
     <property name="main-class"  value="br.ufc.banco.bb.TAAB24H"/>
 
