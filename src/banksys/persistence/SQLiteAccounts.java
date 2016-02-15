@@ -193,14 +193,12 @@ public class SQLiteAccounts implements IAccountRepository{
 				stmt = connection.createStatement();
 				String sql = "DELETE from "+TABLE_ACCOUNTS+" where number="+number+";";
 				stmt.executeUpdate(sql);
-				//connection.commit();
 				stmt.close();
 
 				if(getType(account)==SPECIAL_ACCOUNT){
 					stmt = connection.createStatement();
 					String sqlBonus = "DELETE from "+TABLE_BONUS+" where number="+number+";";
 					stmt.executeUpdate(sqlBonus);
-					//connection.commit();
 					stmt.close();
 				}
 
@@ -213,7 +211,7 @@ public class SQLiteAccounts implements IAccountRepository{
 		} else throw new AccountDeletionException("",number);
 	}
 	public int getType(AbstractAccount account){
-		if(account instanceof SpecialAccount){
+		/*if(account instanceof SpecialAccount){
 			return SPECIAL_ACCOUNT;
 		} else if(account instanceof SavingsAccount){
 			return SAVINGS_ACCOUNT;
@@ -221,7 +219,7 @@ public class SQLiteAccounts implements IAccountRepository{
 			return ORDINARY_ACCOUNT;
 		}  else {
 			return TAX_ACCOUNT;
-		}
+		}*/return account.getType();
 	}
 	public AbstractAccount createAccount(int type, String num){
 
@@ -275,19 +273,22 @@ public class SQLiteAccounts implements IAccountRepository{
 
 	@Override
 	public int numberOfAccounts() {
-		connection = SQLiteConnector.getConnection();
+		
 		int number = 0;
-		Statement stmt = null;
-		try {
-			stmt = connection.createStatement();
-			ResultSet rs = stmt.executeQuery( "SELECT COUNT(*) FROM "+TABLE_ACCOUNTS+";");
+		
+		try(Connection connection = SQLiteConnector.getConnection();
+				Statement stmt = connection.createStatement();
+				ResultSet rs = stmt.executeQuery( "SELECT COUNT(*) FROM "+TABLE_ACCOUNTS+";");
+				) {
+			//stmt = connection.createStatement();
+			//ResultSet rs = stmt.executeQuery( "SELECT COUNT(*) FROM "+TABLE_ACCOUNTS+";");
 
 			if(rs.next()){
 				number = rs.getInt("count(*)");
 			}
-			rs.close();
+			/*rs.close();
 			stmt.close();
-			connection.close();
+			connection.close();*/
 		} catch ( SQLException e ) {
 			System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 		}

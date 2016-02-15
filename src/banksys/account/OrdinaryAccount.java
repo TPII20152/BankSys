@@ -4,7 +4,7 @@ import banksys.account.exception.InsufficientFundsException;
 import banksys.account.exception.NegativeAmountException;
 
 public class OrdinaryAccount extends AbstractAccount {
-
+	
 	public OrdinaryAccount(String number) {
 		super(number);
 	}
@@ -23,7 +23,6 @@ public class OrdinaryAccount extends AbstractAccount {
 
 	@Override
 	public int getType() {
-		// TODO Auto-generated method stub
 		return 1;
 	}
 }

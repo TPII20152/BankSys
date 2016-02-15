@@ -1,12 +1,11 @@
 package test.controller;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import junit.framework.AssertionFailedError;
 import banksys.account.AbstractAccount;
 import banksys.account.OrdinaryAccount;
 import banksys.account.SavingsAccount;
@@ -14,12 +13,7 @@ import banksys.account.SpecialAccount;
 import banksys.account.TaxAccount;
 import banksys.control.BankController;
 import banksys.control.exception.BankTransactionException;
-import banksys.persistence.AccountVector;
-import banksys.persistence.IAccountRepository;
 import banksys.persistence.SQLiteAccounts;
-import banksys.persistence.exception.AccountCreationException;
-import banksys.persistence.exception.AccountDeletionException;
-import banksys.persistence.exception.AccountNotFoundException;
 
 public class BankControllerTest {
 	
@@ -33,8 +27,6 @@ public class BankControllerTest {
 		specialAccount = new SpecialAccount("102");
 		savingsAccount = new SavingsAccount("103");
 		taxAccount = new TaxAccount("104");
-		//acc = new OrdinaryAccount("105");
-		//bank.addAccount(acc);
 	}
 
 	@AfterClass
@@ -97,8 +89,6 @@ public class BankControllerTest {
 	@Test
 	public void doTransferTest() {
 		try {
-			//AbstractAccount acc2 = new OrdinaryAccount("2");
-			//bank.addAccount(acc2);
 			String numberFrom = ordinaryAccount.getNumber();
 			String numberTo = taxAccount.getNumber();
 			bank.doCredit(numberFrom, 10);
@@ -112,10 +102,8 @@ public class BankControllerTest {
 	
 	@Test
 	public void doEarnBonusTest(){
-		//AbstractAccount acc2 = new SpecialAccount("3");
 		String number = specialAccount.getNumber();
 		try {
-			//bank.addAccount(acc2);
 			bank.doCredit(number, 10);
 			bank.doEarnBonus(number);
 			double result = bank.getBalance(number);
@@ -123,21 +111,17 @@ public class BankControllerTest {
 		} catch (BankTransactionException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	@Test
 	public void doEarnInterestTest(){
-		//AbstractAccount acc2 = new SavingsAccount("4");
 		String number = savingsAccount.getNumber();
 		try {
-			//bank.addAccount(acc2);
 			bank.doCredit(number, 10);
 			bank.doEarnInterest(number);
 			double result = bank.getBalance(number);
 			assertEquals(10.01, result, 0);
 		} catch (BankTransactionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

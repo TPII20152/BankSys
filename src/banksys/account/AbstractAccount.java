@@ -7,6 +7,7 @@ public abstract class AbstractAccount {
 
 	protected String number;
 	protected double balance;
+	protected final static int TYPE = 1;
 
 	public AbstractAccount(String number) {
 		this.number = number;
