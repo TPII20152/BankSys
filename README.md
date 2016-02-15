@@ -1,5 +1,7 @@
 # BankSys
 
+[![Build Status](https://travis-ci.org/TPII20152/BankSys.svg?branch=master)](https://travis-ci.org/TPII20152/BankSys)
+
 Trabalho Final da Disciplinas de Técnicas de Promgramação 2
 Professor Lincoln Souza Rocha
 Equipe:	Jonathan Garcia de Queiroz
