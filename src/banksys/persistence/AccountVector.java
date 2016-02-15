@@ -82,8 +82,9 @@ public class AccountVector implements IAccountRepository {
 				if(found) break;
 			}
 			if(!found) throw new AccountNotFoundException(newData.getNumber());
-		}
-		
+		} else {
+			throw new AccountNotFoundException(newData.getNumber());
+		} 
 	}
 	
 }

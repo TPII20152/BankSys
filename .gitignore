@@ -17,5 +17,6 @@ hs_err_pid*
 /bin/
 /reports/
 .pmd
-
 accounts.sqlite
+/build/
+

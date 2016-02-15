@@ -1,163 +1,219 @@
 package test.persistence;
 
-import java.util.ArrayList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.sql.Connection;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.BlockJUnit4ClassRunner;
 
 import banksys.account.AbstractAccount;
 import banksys.account.OrdinaryAccount;
-import banksys.account.SavingsAccount;
 import banksys.account.SpecialAccount;
-import banksys.account.TaxAccount;
+import banksys.account.exception.NegativeAmountException;
+import banksys.persistence.AccountVector;
 import banksys.persistence.SQLiteAccounts;
+import banksys.persistence.SQLiteConnector;
 import banksys.persistence.exception.AccountCreationException;
 import banksys.persistence.exception.AccountDeletionException;
 import banksys.persistence.exception.AccountNotFoundException;
-import junit.framework.TestCase;
 
-//@RunWith(value=BlockJUnit4ClassRunner.class)
-public class SQLiteAccountsTest extends TestCase {
-	SQLiteAccounts sqliteAccounts;
-	OrdinaryAccount ordinaryAccount1,ordinaryAccount2;
-	SpecialAccount specialAccount1,specialAccount2;
-	SavingsAccount savingsAccount1,savingsAccount2;
-	TaxAccount taxAccount1, taxAccount2;
-	ArrayList<String> accountsCreated = new ArrayList<String>();
-	
+public class SQLiteAccountsTest {
+
+	SQLiteAccounts database;
+	Connection rawDbConnection;
+
 	@Before
 	public void setUp() throws Exception {
-		sqliteAccounts = new SQLiteAccounts();
-		ordinaryAccount1 = new OrdinaryAccount("101");
-		ordinaryAccount1.credit(200);
-		ordinaryAccount2 = new OrdinaryAccount("102");
-		ordinaryAccount2.credit(300);
-		specialAccount1 = new SpecialAccount("103");
-		specialAccount1.credit(400);
-		specialAccount2 = new SpecialAccount("104");
-		specialAccount2.credit(400);
-		savingsAccount1 = new SavingsAccount("105");
-		savingsAccount1.credit(500);
-		savingsAccount2 = new SavingsAccount("106");
-		savingsAccount2.credit(600);
-		taxAccount1 = new TaxAccount("107");
-		taxAccount1.credit(700);
-		taxAccount2 = new TaxAccount("108");
-		taxAccount2.credit(800);
+		database = new SQLiteAccounts();
+		database.createTables();
+		rawDbConnection = SQLiteConnector.getConnection();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		for(String number: accountsCreated){
-			sqliteAccounts.delete(number);
-		}
-		/*sqliteAccounts.delete(c1.getNumber());
-		sqliteAccounts.delete(c2.getNumber());
-		sqliteAccounts.delete(ce1.getNumber());
-		sqliteAccounts.delete(ce2.getNumber());
-		sqliteAccounts.delete(cp1.getNumber());
-		sqliteAccounts.delete(cp2.getNumber());
-		sqliteAccounts.delete(ci1.getNumber());
-		sqliteAccounts.delete(ci2.getNumber());*/
 	}
 
 	@Test
 	public void testCreate() {
-		int number = sqliteAccounts.numberOfAccounts();
+		//We have to make sure account 100 si not in the database
 		try {
-			sqliteAccounts.create(ordinaryAccount1);
-			accountsCreated.add(ordinaryAccount1.getNumber());
-		} catch (AccountCreationException e) {
-			System.out.println(e.getMessage());
+			database.delete("100");
+		} catch (Exception e) {
+
 		}
-		assertEquals(number+1, sqliteAccounts.numberOfAccounts());
+
+		try {
+			int previousNumber = database.numberOfAccounts();
+			OrdinaryAccount acc = new OrdinaryAccount("100");
+			database.create(acc);
+			assertEquals(previousNumber+1, database.numberOfAccounts(), 0);
+		} catch (AccountCreationException e) {
+			System.out.println("should not enter this catch block");
+		}	
+	}
+
+	@Test(expected=AccountCreationException.class)
+	public void testCreateExistingAccount() throws AccountCreationException {
+		database.create(new OrdinaryAccount("200"));
+		database.create(new OrdinaryAccount("200"));
+
+		try {
+			database.delete("200");
+		} catch (Exception e) {
+			System.out.println("Should not enter this catch block once we make sure the account is created");
+		}
 	}
 
 	@Test
 	public void testRetrieve() {
+		OrdinaryAccount acc = new OrdinaryAccount("150");
+
 		try {
-			sqliteAccounts.create(ordinaryAccount1);
-			accountsCreated.add(ordinaryAccount1.getNumber());
+			database.delete("150");
+		} catch (Exception e) {
+
+		}
+
+		try {
+			database.create(acc);
+			assertEquals(acc.getBalance(), database.retrieve("150").getBalance(),0);
+			assertEquals(acc.getType(), database.retrieve("150").getType());
+			assertEquals(acc.getNumber(), database.retrieve("150").getNumber());
 		} catch (AccountCreationException e) {
-			System.out.println(e.getMessage());
-		}
-		AbstractAccount retrievedAccount;
-		try {
-			retrievedAccount = sqliteAccounts.retrieve(ordinaryAccount1.getNumber());
-			assertNotNull(retrievedAccount);
-			assertEquals(ordinaryAccount1.getNumber(), retrievedAccount.getNumber());
-			assertEquals(ordinaryAccount1.getBalance(), retrievedAccount.getBalance());
+
 		} catch (AccountNotFoundException e) {
-			e.printStackTrace();
+
 		}
-		
+
 	}
 
-	/*@Test
-	public void testInserirBonus() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testAtualizarOrdinaryAccount() {
-		fail("Not yet implemented");
+	@Test(expected=AccountNotFoundException.class)
+	public void testRetrieveNonExistingAccount() throws AccountNotFoundException {
+		AbstractAccount acc = database.retrieve("800");
 	}
 
 	@Test
-	public void testAtualizarBonus() {
-		fail("Not yet implemented");
+	public void testInsertAndRetrieveBonus() {
+		SpecialAccount acc = new SpecialAccount("714");
+		acc.setBonus(20);
+		database.insertBonus(acc, rawDbConnection);
+		assertEquals(acc.getBonus(), database.retrieveBonus("714", rawDbConnection), 0);
 	}
-*/
-	
-	public void testDelete(){
+
+	@Test
+	public void testUpdate() {
+		try {
+			database.delete("670");
+		} catch (Exception e) {
+
+		}
+
+		try {
+			OrdinaryAccount acc1 = new OrdinaryAccount("670");
+			database.create(acc1);
+			acc1.credit(200);
+			database.update(acc1);
+			assertEquals(acc1.getBalance(), database.retrieve("670").getBalance(), 0);
+		} catch (AccountCreationException e) {
+			System.out.println("Should not enter this catch block");
+		} catch (NegativeAmountException e) {
+			System.out.println("nor this");
+		} catch (AccountNotFoundException e) {
+			System.out.println("or this");
+		}
+	}
+
+	@Test
+	public void testUpdateBonus() {
+		SpecialAccount acc = new SpecialAccount("713");
+		acc.setBonus(20);
+		database.insertBonus(acc, rawDbConnection);
+		acc.setBonus(30);
+		database.updateBonus(acc, rawDbConnection);
+		assertEquals(acc.getBonus(), database.retrieveBonus("713", rawDbConnection), 0);
+	}
+
+	@Test
+	public void testDelete() {
+		try {
+			database.create(new OrdinaryAccount("200"));
+			assertEquals(1, database.numberOfAccounts(), 0);
+			database.delete("200");
+			assertEquals(0, database.numberOfAccounts(), 0);
+
+		} catch (AccountCreationException acex) {
+			System.out.println("Should not enter this catch block");
+		} catch (AccountDeletionException adex) {
+			System.out.println("Should not enter this catch block either");
+		} catch (AccountNotFoundException e) {
+
+		}
+	}
+
+	@Test
+	public void testCreateAccount() {
+		assertEquals(OrdinaryAccount.class, database.createAccount(1, "15").getClass());
+	}
+
+	@Test
+	public void testCreateSpecialAccount() {
+		assertEquals(SpecialAccount.class, database.createSpecialAccount("13", 0.1).getClass());
+	}
+
+	@Test
+	public void testList() {
+		try {
+			database.delete("670");
+		} catch (Exception e) {
+			System.out.println("Should not enter this catch block once we make sure the account is created");
+		}
+
+		try {
+			OrdinaryAccount acc1 = new OrdinaryAccount("670");
+			database.create(acc1);
+			acc1.credit(200);
+			database.update(acc1);
+			assertEquals(acc1.getBalance(), database.retrieve("670").getBalance(), 0);
+		} catch (AccountCreationException e) {
+			System.out.println("Should not enter this catch block");
+		} catch (NegativeAmountException e) {
+			System.out.println("nor this");
+		} catch (AccountNotFoundException e) {
+			System.out.println("or this");
+		}
+	}
+
+	@Test
+	public void testNumberOfAccounts() {
+		try {
+			database.delete("777");
+		} catch (Exception e) {
+			
+		}
 		
 		try {
-			sqliteAccounts.create(ordinaryAccount1);
-			accountsCreated.add(ordinaryAccount1.getNumber());
-			int number = sqliteAccounts.numberOfAccounts();
-			sqliteAccounts.delete(ordinaryAccount1.getNumber());
-			accountsCreated.remove(ordinaryAccount1.getNumber());
-			assertEquals(number-1, sqliteAccounts.numberOfAccounts());
-		} catch (AccountCreationException | AccountDeletionException | AccountNotFoundException e) {
-			System.out.println(e.getMessage());
+			int number = database.numberOfAccounts();
+			database.create(new OrdinaryAccount("777"));
+			assertEquals(number + 1, database.numberOfAccounts(), 0);
+		} catch (AccountCreationException e) {
+			
 		}
+	}
+
+	@Test
+	public void testInsertAndSearchLog() {
+		try {
+			database.create(new OrdinaryAccount("456"));
+		} catch (AccountCreationException acex) {}
 		
-	}
-
-	@Test
-	public void testGetType() {
-		int typeOrdinaryAccount = sqliteAccounts.getType(ordinaryAccount1);
-		int typeSpecialAccount = sqliteAccounts.getType(specialAccount1);
-		int typeSavingsAccount = sqliteAccounts.getType(savingsAccount1);
-		int typeTaxAccount = sqliteAccounts.getType(taxAccount1);
-		assertEquals(1, typeOrdinaryAccount);
-		assertEquals(2, typeSpecialAccount);
-		assertEquals(3, typeSavingsAccount);
-		assertEquals(4, typeTaxAccount);
-	}
-
-	/*@Test
-	public void testCriarOrdinaryAccount() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testCriarSpecialAccount() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testListar() {
-		fail("Not yet implemented");
-	}*/
-
-	@Test
-	public void testnumberOfAccounts() {
-		int quantidade = sqliteAccounts.numberOfAccounts();
-		assertNotNull(quantidade);
+		database.insertLog("456", "TESTE");
+		
+		assertEquals("TESTE", ((String[]) database.searchLog("456").get(0))[1]);
+		
+		
 	}
 
 }

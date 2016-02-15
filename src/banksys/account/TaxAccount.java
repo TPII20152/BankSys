@@ -23,7 +23,6 @@ public class TaxAccount extends AbstractAccount {
 
 	@Override
 	public int getType() {
-		// TODO Auto-generated method stub
 		return 4;
 	}
 	
