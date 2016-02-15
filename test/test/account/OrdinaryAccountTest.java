@@ -16,7 +16,8 @@ public class OrdinaryAccountTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		acc = new OrdinaryAccount("111");
+		fail("");
+		//acc = new OrdinaryAccount("111");
 	}
 
 	@After
