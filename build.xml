@@ -40,7 +40,7 @@
 			<classpath refid="buildClasspath" />
 		</javac>
 
-		<junit printsummary="yes" haltonfailure="yes">
+		<junit printsummary="yes" haltonfailure="no">
 			<classpath refid="buildClasspath" />
 
 			<formatter type="plain" />
